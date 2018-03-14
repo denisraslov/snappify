@@ -24,3 +24,9 @@ npx snapper components/**/*.jsx __tests__
 *([npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b) comes with npm 5.2+ and higher, see [instructions for older npm versions](https://gist.github.com/gaearon/4064d3c23a77c74a3614c498a8bb1c5f))*
 
 You'll get a folder full of generated snapshot-based tests for every of your components.
+
+It will create a directory called `__tests__` inside the current folder.
+
+Inside that directory, it will generate the files with snapshot-based tests for every of the components from the files that matched to `components/**/*.js` pattern. The structure of the included folders with tests will be the same as the scructure of the folders with components.
+
+## How it works
