@@ -4,4 +4,23 @@
   <img src="https://emojipedia-us.s3.amazonaws.com/thumbs/120/apple/118/camera-with-flash_1f4f8.png" alt="snapper logo" title="snapper logo" width="100">
   <br>
 </h1>
-<p align="center" style="font-size: 1.2rem;">A generator of Jest snapshot based tests for React components</p>
+<p align="center" style="font-size: 1.2rem;">A generator of Jest snapshot based tests for React components written with TypeScript</p>
+
+## Why
+[Snapshot testing](https://facebook.github.io/jest/docs/en/snapshot-testing.html) of React components is useful tool that [Jest](https://facebook.github.io/jest/) provides to make sure your UI does not change unexpectedly. To apply it you have to describe several different states of a component configuring it with different props that this component can have. 
+
+However, if you write components with [TypeScript](https://www.typescriptlang.org/), you have an interface describing the types of the props. There is no reason to fill props up manually with random values in your tests. It could be done automatically based on the described types. That is what `Snapper` does. 
+
+`Snapper` generates files with tests for your React components. You just run them. ✨
+
+## Quick Overview
+
+Run `Snapper` through `npx` with a configured glob pattern of your React components files and a name of a root folder for generated tests:
+
+```sh
+npx snapper components/**/*.jsx __tests__
+```
+
+*([npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b) comes with npm 5.2+ and higher, see [instructions for older npm versions](https://gist.github.com/gaearon/4064d3c23a77c74a3614c498a8bb1c5f))*
+
+You'll get a folder full of generated snapshot-based tests for every of your components.
