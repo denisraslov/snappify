@@ -7,7 +7,7 @@
 <p align="center" style="font-size: 1.2rem;">A generator of Jest snapshot based tests for React components written with TypeScript</p>
 
 ## Why
-[Snapshot testing](https://facebook.github.io/jest/docs/en/snapshot-testing.html) of React components is useful tool that [Jest](https://facebook.github.io/jest/) provides to make sure your UI does not change unexpectedly. To apply it you have to describe several different states of a component configuring it with different props that this component can have. 
+[Snapshot testing](https://facebook.github.io/jest/docs/en/snapshot-testing.html) of React components is a useful tool that [Jest](https://facebook.github.io/jest/) provides to make sure your UI does not change unexpectedly. To apply it you have to describe several different states of a component configuring it with different props that this component can have. 
 
 However, if you write components with [TypeScript](https://www.typescriptlang.org/), you have an interface describing the types of the props. There is no reason to fill props up manually with random values in your tests. It could be done automatically based on the described types. That is what `Snapper` does. 
 
@@ -47,7 +47,7 @@ const Button: React.StatelessComponent<IButtonProps> = (props) => {
 
     return (
         <div className={className} onClick={!isDisabled && onClick}>
-            {props.text}
+            {props.children}
         </div>
     );
 };
