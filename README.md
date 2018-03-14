@@ -30,3 +30,55 @@ It will create a directory called `__tests__` inside the current folder.
 Inside that directory, it will generate the files with snapshot-based tests for every of the components from the files that matched to `components/**/*.js` pattern. The structure of the included folders with tests will be the same as the scructure of the folders with components.
 
 ## How it works
+A usual React component written with TypeScript look like this:
+
+```ts
+import * as React from 'react';
+
+interface IButtonProps {
+    className?: string;
+    children: React.ReactNode;
+    isDisabled?: boolean;
+    onClick?: () => void;
+}
+
+const Button: React.StatelessComponent<IButtonProps> = (props) => {
+    const { className, isDisabled, onClick } = props;
+
+    return (
+        <div className={className} onClick={!isDisabled && onClick}>
+            {props.text}
+        </div>
+    );
+};
+
+export default Button;
+```
+
+Here we have the `Button` component that have the declared interface for its props called `IButtonProps`. 
+
+`Snapper` takes this component and its interface, and generates a file with snapshot-based tests. The props values be taken randomly based on their types:
+
+```jsx
+import React from 'react';
+import renderer from 'react-test-renderer';
+
+import Button from 'components/Button.tsx';
+
+test('Button 1', () => {
+    const tree = renderer.create(
+        <Button
+            className={"className value"}
+            isDisabled={true}
+            onClick={() => {}}
+            children={<div />}
+        />
+    ).toJSON();
+
+    expect(tree).toMatchSnapshot();
+});
+
+// other props values combinations go here...
+```
+
+
