@@ -87,6 +87,6 @@ test('Button with the required props', () => {
 });
 ```
 
-Right now `Snapper` generates two combinations of props' values only: *for all the props* and *for the required props*. We condiser increase of the quantity of the combinations as a future improvement.
+Right now `Snapper` generates two combinations of props' values only: **for all the props** and **for the required props**. We condiser increase of the quantity of the combinations as a future improvement.
 
 
