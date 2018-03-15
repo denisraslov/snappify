@@ -1,0 +1,24 @@
+{
+  "name": "snapper",
+  "version": "alpha",
+  "description": "A generator of Jest snapshot based tests for React components written with TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "snapper": "node index.js"
+  },
+  "keywords": [],
+  "files": [],
+  "author": "Denis Raslov <denis.raslov@yandex.ru>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/denisraslov/snapper.git"
+  },
+  "bugs": {
+    "url": "https://github.com/denisraslov/snapper/issues"
+  },
+  "homepage": "https://github.com/denisraslov/snapper#readme",
+  "dependencies": {
+    "glob": "^7.1.2"
+  }
+}
