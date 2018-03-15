@@ -21,6 +21,10 @@ function generateValue(fieldName, type) {
     return '() => {}';
   }
 
+  if (type === 'object') {
+    return '{}';
+  }
+
   if (type === 'React.ReactNode') {
     return '<div />';
   }

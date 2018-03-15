@@ -63,4 +63,7 @@ function getPropsInterfaceTypes(fileName) {
   });
 }
 
-module.exports = getPropsInterfaceTypes;
+module.exports = {
+  readFile,
+  getPropsInterfaceTypes
+};
