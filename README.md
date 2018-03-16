@@ -15,17 +15,44 @@ However, if you write components with [TypeScript](https://www.typescriptlang.or
 
 ## Quick Overview
 
-Run `Snapper` through `npx` with a configured glob pattern of your React components files and a name of a root folder for generated tests:
+install `Snapper` globally:
 
 ```sh
-npx snapper components/**/*.jsx __tests__
+npm install -g snapper
 ```
 
-*([npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b) comes with npm 5.2+ and higher, see [instructions for older npm versions](https://gist.github.com/gaearon/4064d3c23a77c74a3614c498a8bb1c5f))*
+Run `Snapper` inside of a project folder with a configured glob pattern of the React components files and a name of a root folder for generated tests:
+
+```sh
+snapper components/**/*.jsx __tests__
+```
 
 It will create a directory called `__tests__` inside the current folder.
 
-Inside that directory, it will generate the files with snapshot-based tests for every of the components from the files that matched to `components/**/*.js` pattern. The structure of the included folders with tests will be the same as the scructure of the folders with components.
+Inside that directory, it will generate the files with snapshot-based tests for every of the components from the files that matched to `components/**/*.js` pattern. The structure of the included folders with tests will be the same as the structure of the folders with components. The names of the files with tests will be the same as the names of the files with the components.
+
+For example, if you have this structure of folders:
+```
+my-app
+├── components
+│   └── Header.tsx
+│   └── Content.tsx
+│   └── Footer.tsx
+│   └── Button
+│       └── index.tsx
+```
+
+You will get this structure of the folders with the tests (when you run the command above):
+
+```
+my-app
+├── __tests__
+│   └── Header.js
+│   └── Content.js
+│   └── Footer.js
+│   └── Button
+│       └── index.js
+```
 
 ## How it works
 A usual React component written with TypeScript looks like this:
@@ -89,4 +116,4 @@ test('Button with the required props', () => {
 
 Right now `Snapper` generates two combinations of props' values only: **for all the props** and **for the required props**. We condiser increase of the quantity of the combinations as a future improvement.
 
-
+## Supported TypeScript types
