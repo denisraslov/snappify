@@ -1,6 +1,6 @@
 {
   "name": "snapper",
-  "version": "alpha",
+  "version": "0.0.1",
   "description": "A generator of Jest snapshot based tests for React components written with TypeScript",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,5 @@
     "url": "https://github.com/denisraslov/snapper/issues"
   },
   "homepage": "https://github.com/denisraslov/snapper#readme",
-  "dependencies": {
-    "glob": "^7.1.2"
-  }
+  "dependencies": {}
 }

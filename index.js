@@ -1,33 +1,40 @@
 const getPropsInterfaceTypes = require('./reader.js').getPropsInterfaceTypes;
 const generateValue = require('./valuesGenerator.js');
-const getArg = require('./argGetter.js');
 const writeTestFile = require('./writer.js').writeTestFile;
 
-const componentPath = getArg('path');
-
-if (!componentPath) {
-  throw new Error('Pass the path argument');
-}
+const componentFilePaths = process.argv.slice(2, process.argv.length - 1);
+const testsRoot = process.argv.pop();
 
 function getComponentNameFromPath(path) {
-  return componentPath
+  return path
     .split('/').pop()
     .split('.').shift();
 }
 
-getPropsInterfaceTypes(componentPath).then((types) => {
-  const typesWithValues = types.map((item) => {
-    return Object.assign(item, {
-      value: generateValue(item.name, item.type)
-    });
-  });
+function createTestFileForComponent(componentPath) {
+  getPropsInterfaceTypes(componentPath)
+    .then((types) => {
+      const typesWithValues = types.map((item) => {
+        return Object.assign(item, {
+          value: generateValue(item.name, item.type)
+        });
+      });
 
-  console.log(`Interface types with values: ` +
-    `\n${typesWithValues.map(obj => JSON.stringify(obj) + '\n')}`);
+      console.log(`Interface types with values: ` +
+        `\n${typesWithValues.map(obj => JSON.stringify(obj) + '\n')}`);
 
-  writeTestFile(
-    getComponentNameFromPath(componentPath),
-    componentPath,
-    typesWithValues
-  );
+      writeTestFile(
+        getComponentNameFromPath(componentPath),
+        componentPath,
+        typesWithValues,
+        testsRoot
+      );
+    })
+    .catch((error) => {});
+}
+
+// Walk the files with the components
+componentFilePaths.forEach((componentPath) => {
+  console.log(componentPath);
+  createTestFileForComponent(componentPath);
 });

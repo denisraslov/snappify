@@ -19,7 +19,7 @@ function generateTest(template, id, propsText) {
     ) + '\n';
 }
 
-function writeTestFile(componentName, componentPath, props) {
+function writeTestFile(componentName, componentPath, props, testsRoot) {
   readFile('templates/testTemplate.tpl', (content) => {
       let testContent = content.replace(/\$COMPONENT_NAME/g, componentName);
       let testsContent = '';
@@ -41,8 +41,13 @@ function writeTestFile(componentName, componentPath, props) {
         fileContent = fileContent.replace(/\$COMPONENT_PATH/g, componentPath);
         fileContent = fileContent.replace(/\$TESTS/g, testsContent);
 
-        writeFile(`${componentName}.test.js`, fileContent, () => {
-          console.log(`Test file for ${componentName} was created! 📸`);
+        // Create tests root folder
+        if (!fs.existsSync(testsRoot)){
+          fs.mkdirSync(testsRoot);
+        }
+
+        writeFile(`${testsRoot}/${componentName}.js`, fileContent, () => {
+          console.log(`Test file for ${componentPath} was created! 📸`);
         });
       });
   });

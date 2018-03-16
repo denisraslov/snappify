@@ -7,7 +7,7 @@ function readFile(fileName, callback) {
   });
 }
 
-function findPropsInterface(text) {
+function findPropsInterface(text, fileName) {
     const interfaceNameRegExp = /React.(Component|PureComponent|StatelessComponent)<(.*?)(>|,)/g;
     const interfaceNameMatch = interfaceNameRegExp.exec(text);
 
@@ -48,17 +48,23 @@ function findPropsInterface(text) {
 
         return types;
       }
+    } else {
+      console.log(`⚠️ ${fileName} doesn't contain a React component. This file was skipped.`)
     }
 }
 
 function getPropsInterfaceTypes(fileName) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     readFile(fileName, (content) => {
       const contentWithoutComments = content.replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '');
       const contentWithoutLineBreaks = contentWithoutComments.replace(/\n|\r/g, '');
-      const types = findPropsInterface(contentWithoutLineBreaks.trim());
+      const types = findPropsInterface(contentWithoutLineBreaks.trim(), fileName);
 
-      resolve(types);
+      if (types) {
+        resolve(types);
+      } else {
+        reject();
+      }
     });
   });
 }
