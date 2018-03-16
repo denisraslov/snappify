@@ -3,12 +3,7 @@ const PROP_DELIMITER = '\n            ';
 function generateAllPropAttributes(props) {
   return props.map((prop) => {
     const isStringValue = prop.type === 'string';
-    const decoratorChar = isStringValue ? '\'' : '';
-    const propValueString =
-      decoratorChar +
-      prop.value +
-      decoratorChar;
-    const propString = `${prop.name}={${propValueString}}`;
+    const propString = `${prop.name}={${prop.value}}`;
 
     return propString;
   }).join(PROP_DELIMITER);

@@ -16,7 +16,7 @@ function createTestFileForComponent(componentPath) {
     .then((types) => {
       const typesWithValues = types.map((item) => {
         return Object.assign(item, {
-          value: generateValue(item.name, item.type)
+          value: generateValue(item.type, item.name)
         });
       });
 
