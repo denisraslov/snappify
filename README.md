@@ -121,3 +121,7 @@ test('Button with the required props', () => {
 Right now `Snapper` generates two combinations of props' values only: **for all the props** and **for the required props**. We condiser increase of the quantity of the combinations as a future improvement.
 
 ## Supported TypeScript types
+
+Right now `Snapper` supports the [basic types of TypeScript](https://www.typescriptlang.org/docs/handbook/basic-types.html). It also supports a few of the React types: `React.ReactNode` and `React.CSSProperties`. We condiser increase of the supported types as a future improvement.
+
+## Usage
