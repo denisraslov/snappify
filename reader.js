@@ -33,10 +33,6 @@ function findPropsInterface(text, fileName) {
             .filter((item, i) => i > 0)
             .join(':');
 
-          if (type.includes('=>')) {
-            type = 'function';
-          }
-
           return {
             name: nameAndType[0].replace(/\?/g, ''),
             type,

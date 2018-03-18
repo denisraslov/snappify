@@ -5,6 +5,14 @@ function getRandomInt(min, max) {
 }
 
 function generatePrimitiveValue(type, fieldName) {
+  if (type === 'void' || type === 'undefined') {
+    return 'undefined';
+  }
+
+  if (type === 'null') {
+    return 'null';
+  }
+
   if (type === 'string') {
     return fieldName
       ? `\'${fieldName} value\'`
@@ -36,20 +44,24 @@ function generateArrayValue(type) {
   return `[${generatePrimitiveValue(type)}, ${generatePrimitiveValue(type)}]`;
 }
 
+function generateFunctionValue(type) {
+  return `() => ${generatePrimitiveValue(type)}`;
+}
+
 function generateValue(type, fieldName) {
   let value = generatePrimitiveValue(type, fieldName);
 
   if (!value) {
-    if (type === 'function') {
-      return '() => {}';
-    }
-
     if (type.includes('[]')) {
       value = generateArrayValue(type.substr(type, type.length - 2));
     }
 
     if (type.includes('Array')) {
       value = generateArrayValue(type.substr(6, type.length - 7));
+    }
+
+    if (type.includes('=>')) {
+      value = generateFunctionValue(type.split('=>').pop());
     }
   }
 
