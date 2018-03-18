@@ -6,6 +6,28 @@ function readFile(fileName, callback) {
       callback(data);
   });
 }
+// export enum ButtonTypes {
+
+function findExportedEnums(text, fileName) {
+    const enumRegExp = /export enum(.*?){(.*?)}/g;
+    const enumMatches = text.match(enumRegExp);
+
+    if (enumMatches) {
+      const enums = enumMatches.map((matchText) => {
+        const enumMatch = (/export enum(.*?){(.*?)}/g).exec(matchText);
+        const enumName = enumMatch[1].trim();
+        const enumItems = enumMatch[2].split(',').map(item => item.trim());
+
+        return {
+          name: enumName,
+          items: enumItems
+        };
+      });
+
+      return enums;
+    }
+  }
+
 
 function findPropsInterface(text, fileName) {
     const interfaceNameRegExp = /React.(Component|PureComponent|StatelessComponent)<(.*?)(>|,)/g;
@@ -57,9 +79,10 @@ function getPropsInterfaceTypes(fileName) {
       const contentWithoutComments = content.replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '');
       const contentWithoutLineBreaks = contentWithoutComments.replace(/\n|\r/g, '');
       const types = findPropsInterface(contentWithoutLineBreaks.trim(), fileName);
+      const enums = findExportedEnums(contentWithoutLineBreaks.trim(), fileName);
 
       if (types) {
-        resolve(types);
+        resolve({ types, enums });
       } else {
         reject();
       }

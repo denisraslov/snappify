@@ -4,7 +4,7 @@ function getRandomInt(min, max) {
   return rand;
 }
 
-function generatePrimitiveValue(type, fieldName) {
+function generatePrimitiveValue(type, fieldName, enums) {
   if (type === 'void' || type === 'undefined') {
     return 'undefined';
   }
@@ -38,30 +38,48 @@ function generatePrimitiveValue(type, fieldName) {
   if (type === 'React.CSSProperties') {
     return '{ padding: 0 }';
   }
+
+  if (enums) {
+    const typeEnum = enums.find(item => item.name === type);
+    if (typeEnum) {
+      const enumItem = typeEnum.items[getRandomInt(0, typeEnum.items.length - 1)];
+      return `${type}.${enumItem}`;
+    }
+  }
 }
 
-function generateArrayValue(type) {
-  return `[${generatePrimitiveValue(type)}, ${generatePrimitiveValue(type)}]`;
+function generateArrayValue(type, enums) {
+  return `[${generatePrimitiveValue(type, undefined, enums)}, ` +
+    `${generatePrimitiveValue(type, undefined, enums)}]`;
 }
 
-function generateFunctionValue(type) {
-  return `() => ${generatePrimitiveValue(type)}`;
+function generateFunctionValue(type, enums) {
+  return `() => ${generatePrimitiveValue(type, undefined, enums)}`;
 }
 
-function generateValue(type, fieldName) {
-  let value = generatePrimitiveValue(type, fieldName);
+function generateValue(type, fieldName, enums) {
+  let value = generatePrimitiveValue(type, fieldName, enums);
 
   if (!value) {
     if (type.includes('[]')) {
-      value = generateArrayValue(type.substr(type, type.length - 2));
+      const itemType = type.substr(type, type.length - 2);
+      if (itemType) {
+        value = generateArrayValue(itemType, enums);
+      }
     }
 
     if (type.includes('Array')) {
-      value = generateArrayValue(type.substr(6, type.length - 7));
+      const itemType = type.substr(6, type.length - 7);
+      if (itemType) {
+        value = generateArrayValue(itemType, enums);
+      }
     }
 
     if (type.includes('=>')) {
-      value = generateFunctionValue(type.split('=>').pop());
+      const returnType = type.split('=>').pop();
+      if (returnType) {
+        value = generateFunctionValue(returnType, enums);
+      }
     }
   }
 

@@ -13,10 +13,10 @@ function getComponentNameFromPath(path) {
 
 function createTestFileForComponent(componentPath) {
   getPropsInterfaceTypes(componentPath)
-    .then((types) => {
+    .then(({ types, enums }) => {
       const typesWithValues = types.map((item) => {
         return Object.assign(item, {
-          value: generateValue(item.type, item.name)
+          value: generateValue(item.type, item.name, enums)
         });
       });
 
@@ -32,6 +32,7 @@ function createTestFileForComponent(componentPath) {
           getComponentNameFromPath(componentPath),
           componentPath,
           typesWithValues,
+          enums,
           testsRoot
         );
       } else {

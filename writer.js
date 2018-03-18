@@ -25,7 +25,19 @@ function createFolder(path) {
   }
 }
 
-function writeTestFile(componentName, componentPath, props, testsRoot) {
+function generateComponentImportStatement(componentName, enums) {
+  let result = componentName;
+
+  if (enums) {
+    result += ', { '+ enums
+      .map(item => item.name)
+      .join(', ') + ' }';
+  }
+
+  return result;
+}
+
+function writeTestFile(componentName, componentPath, props, enums, testsRoot) {
   readFile('templates/testTemplate.tpl', (content) => {
       let testContent = content.replace(/\$COMPONENT_NAME/g, componentName);
       let testsContent = '';
@@ -43,7 +55,8 @@ function writeTestFile(componentName, componentPath, props, testsRoot) {
       );
 
       readFile('templates/fileTemplate.tpl', (content) => {
-        let fileContent = content.replace(/\$COMPONENT_NAME/g, componentName);
+        let fileContent = content.replace(/\$COMPONENT_IMPORT/g,
+          generateComponentImportStatement(componentName, enums));
         fileContent = fileContent.replace(/\$COMPONENT_PATH/g, componentPath);
         fileContent = fileContent.replace(/\$TESTS/g, testsContent);
 
