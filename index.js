@@ -20,21 +20,31 @@ function createTestFileForComponent(componentPath) {
         });
       });
 
-      console.log(`Interface types with values: ` +
-        `\n${typesWithValues.map(obj => JSON.stringify(obj) + '\n')}`);
+      // console.log(`Interface types with values: ` +
+      //   `\n${typesWithValues.map(obj => JSON.stringify(obj) + '\n')}`);
 
-      writeTestFile(
-        getComponentNameFromPath(componentPath),
-        componentPath,
-        typesWithValues,
-        testsRoot
-      );
+      // A type is not supported if we didn't generate a value for it.
+      const notSupportedTypes = typesWithValues
+        .filter(item => item.type !== 'undefined' && item.value === undefined);
+
+      if (notSupportedTypes.length === 0) {
+        writeTestFile(
+          getComponentNameFromPath(componentPath),
+          componentPath,
+          typesWithValues,
+          testsRoot
+        );
+      } else {
+        console.log(`⚠️ The props of ${componentPath} contain not supported types: ` +
+          notSupportedTypes.map(item => item.type).join(',') +
+          `. This file was skipped.`)
+      }
     })
     .catch((error) => {});
 }
 
 // Walk the files with the components
 componentFilePaths.forEach((componentPath) => {
-  console.log(componentPath);
+  // console.log(componentPath);
   createTestFileForComponent(componentPath);
 });

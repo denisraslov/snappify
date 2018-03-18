@@ -14,7 +14,7 @@ function findPropsInterface(text, fileName) {
     if (interfaceNameMatch) {
       const interfaceName = interfaceNameMatch[2];
 
-      console.log(`Component interface was found: ${interfaceName}`);
+      // console.log(`Component interface was found: ${interfaceName}`);
 
       const interfaceRegExp = new RegExp(`interface ${interfaceName} {(.*?)}`);
       const interfaceMatch = interfaceRegExp.exec(text);
@@ -40,12 +40,14 @@ function findPropsInterface(text, fileName) {
           };
         });
 
-        console.log(`Interface types: \n${types.map(obj => JSON.stringify(obj) + '\n')}`);
+        // console.log(`Interface types: \n${types.map(obj => JSON.stringify(obj) + '\n')}`);
 
         return types;
+      } else {
+        console.log(`⚠️ Can't find a TypeScript props interface ${interfaceName} in ${fileName}. This file was skipped.`)
       }
     } else {
-      console.log(`⚠️ ${fileName} doesn't contain a React component. This file was skipped.`)
+      console.log(`⚠️ ${fileName} doesn't contain a React component with a TypeScript props interface. This file was skipped.`)
     }
 }
 
