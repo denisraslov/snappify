@@ -18,5 +18,9 @@
     "url": "https://github.com/denisraslov/snapper/issues"
   },
   "homepage": "https://github.com/denisraslov/snapper#readme",
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "babel-preset-env": "^1.6.1",
+    "jest": "^22.4.2"
+  }
 }
