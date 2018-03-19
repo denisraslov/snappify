@@ -25,7 +25,7 @@ npm install -g snapper
 Run `Snapper` inside of a project folder with a configured glob pattern of the React components files and a name of a root folder for generated tests:
 
 ```sh
-snapper components/**/*.jsx __tests__
+snapper components/**/*.tsx __tests__
 ```
 
 It will create a directory called `__tests__` inside the current folder.
