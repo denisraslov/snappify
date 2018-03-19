@@ -2,10 +2,7 @@ const PROP_DELIMITER = '\n            ';
 
 function generateAllPropAttributes(props) {
   return props.map((prop) => {
-    const isStringValue = prop.type === 'string';
-    const propString = `${prop.name}={${prop.value}}`;
-
-    return propString;
+    return `${prop.name}={${prop.value}}`;
   }).join(PROP_DELIMITER);
 }
 
