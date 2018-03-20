@@ -1,5 +1,5 @@
-const generateAllPropAttributes = require('./../propsGenerator.js').generateAllPropAttributes;
-const generateRequiredPropAttributes = require('./../propsGenerator.js').generateRequiredPropAttributes;
+const generateAllPropAttributes = require('./../src/propsGenerator').generateAllPropAttributes;
+const generateRequiredPropAttributes = require('./../src/propsGenerator').generateRequiredPropAttributes;
 
 const PROP_DELIMITER = '\n      ';
 

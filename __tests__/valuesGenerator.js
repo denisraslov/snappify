@@ -1,4 +1,4 @@
-import generateValue from './../valuesGenerator';
+import generateValue from './../src/valuesGenerator';
 
 test('String generation', () => {
   expect(generateValue('string', 'field')).toBe('\'field value\'');

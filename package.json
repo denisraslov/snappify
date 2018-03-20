@@ -8,8 +8,22 @@
     "test": "jest",
     "precommit": "npm test"
   },
-  "keywords": [],
-  "files": [],
+  "keywords": [
+    "jest",
+    "snapshot",
+    "react",
+    "typescript",
+    "test",
+    "testing",
+    "component",
+    "generator"
+  ],
+  "bin": "index.js",
+  "files": [
+    "index.js",
+    "src",
+    "templates"
+  ],
   "author": "Denis Raslov <denis.raslov@yandex.ru>",
   "license": "MIT",
   "repository": {

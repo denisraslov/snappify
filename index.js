@@ -1,6 +1,6 @@
-const getPropsInterfaceTypes = require('./reader').getPropsInterfaceTypes;
-const generateValue = require('./valuesGenerator');
-const writeTestsFile = require('./testsWriter').writeTestsFile;
+const getPropsInterfaceTypes = require('./src/reader').getPropsInterfaceTypes;
+const generateValue = require('./src/valuesGenerator');
+const writeTestsFile = require('./src/testsWriter').writeTestsFile;
 
 const componentFilePaths = process.argv.slice(2, process.argv.length - 1);
 const testsRoot = process.argv.pop();
