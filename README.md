@@ -22,10 +22,10 @@ Install `Snappify` globally:
 npm install -g snappify
 ```
 
-Run `Snapper` inside of a project folder with a configured glob pattern of the React components files and a name of a root folder for generated tests:
+Run `Snappify` inside of a project folder with a configured glob pattern of the React components files and a name of a root folder for generated tests:
 
 ```sh
-snapper components/**/*.tsx __tests__
+snappify components/**/*.tsx __tests__
 ```
 
 It will create a directory called `__tests__` inside the current folder.
