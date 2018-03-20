@@ -8,6 +8,14 @@ test('String generation', () => {
   expect(generateValue('()=>string')).toBe('() => \'value\'');
 });
 
+test('Null generation', () => {
+  expect(generateValue('null', 'field')).toBe('null');
+  expect(generateValue('null')).toBe('null');
+  expect(generateValue('null[]')).toBe('[null, null]');
+  expect(generateValue('Array<null>')).toBe('[null, null]');
+  expect(generateValue('()=>null')).toBe('() => null');
+});
+
 test('Boolean generation', () => {
   const boolValues = [false, true];
 
@@ -22,4 +30,20 @@ test('Boolean generation', () => {
 
   const func = generateValue('()=>boolean');
   expect(boolValues).toContain(eval(`(${func})()`));
+});
+
+test('Enum value generation', () => {
+  const enumItems = ['PRIMARY', 'SECONDARY', 'TEXT'];
+  const expectedEnumValues = ['Type.PRIMARY', 'Type.SECONDARY', 'Type.TEXT'];
+
+  expect(expectedEnumValues).toContain(generateValue('Type', 'field', [
+    {
+      name: 'Type',
+      items: enumItems
+    }
+  ]));
+});
+
+test('Unsupported type value generation', () => {
+  expect(generateValue('UnsupportedType', 'field')).toBe(undefined);
 });
