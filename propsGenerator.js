@@ -1,4 +1,4 @@
-const PROP_DELIMITER = '\n            ';
+const PROP_DELIMITER = '\n      ';
 
 function generateAllPropAttributes(props) {
   return props.map((prop) => {

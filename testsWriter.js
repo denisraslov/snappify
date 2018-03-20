@@ -48,60 +48,65 @@ async function generateTestsFile(
   componentPath,
   componentName,
   enums,
-  props,
-  callback
+  props
 ) {
-  const allPropsTestContent = await generateTest(
-    componentName,
-    'with all the props',
-    generateAllPropAttributes(props)
-  );
-
-  const requiredPropsTestContent = await generateTest(
-    componentName,
-    'with all the props',
-    generateAllPropAttributes(props)
-  );
-
-  readFile('templates/fileTemplate.tpl', (content) => {
-    let fileContent = content.replace(/\$COMPONENT_IMPORT/g,
-      generateComponentImportStatement(componentName, enums));
-    fileContent = fileContent.replace(/\$COMPONENT_PATH/g, componentPath);
-    fileContent = fileContent.replace(/\$TESTS/g,
-      allPropsTestContent + requiredPropsTestContent
+    const allPropsTestContent = await generateTest(
+      componentName,
+      'with all the props',
+      generateAllPropAttributes(props)
     );
 
-    if (callback) {
-      callback(fileContent);
-    }
+    const requiredPropsTestContent = await generateTest(
+      componentName,
+      'with the required props',
+      generateRequiredPropAttributes(props)
+    );
+
+    return new Promise((resolve) => {
+
+    readFile('templates/fileTemplate.tpl', (content) => {
+      let fileContent = content.replace(/\$COMPONENT_IMPORT/g,
+        generateComponentImportStatement(componentName, enums));
+      fileContent = fileContent.replace(/\$COMPONENT_PATH/g, componentPath);
+      fileContent = fileContent.replace(/\$TESTS/g,
+        allPropsTestContent + requiredPropsTestContent
+      );
+
+      resolve(fileContent);
+    });
   });
 }
 
-function writeTestsFile(componentName, componentPath, props, enums, testsRoot) {
-  generateTestsFile(
+async function writeTestsFile(
+  componentName,
+  componentPath,
+  props,
+  enums,
+  testsRoot
+) {
+  const fileContent = await generateTestsFile(
     componentPath,
     componentName,
     enums,
-    props,
-    (fileContent) => {
-      // Create tests root folder
-      createFolder(testsRoot);
+    props
+  );
 
-      const componentFolders = componentPath.split('/');
-      componentFolders.shift();
-      componentFolders.pop();
-      const componentFolderPath = componentFolders.join('/');
-      const testPath = `${testsRoot}/${componentFolderPath}`;
+  // Create tests root folder
+  createFolder(testsRoot);
 
-      if (componentFolderPath) {
-        createFolder(testPath);
-      }
+  const componentFolders = componentPath.split('/');
+  componentFolders.shift();
+  componentFolders.pop();
+  const componentFolderPath = componentFolders.join('/');
+  const testPath = `${testsRoot}/${componentFolderPath}`;
 
-      writeFile(`${testPath}/${componentName}.js`, fileContent, () => {
-        console.log(`Test file for ${componentPath} was created! 📸`);
-      });
-    }
-  )
+  if (componentFolderPath) {
+    createFolder(testPath);
+  }
+
+  writeFile(`${testPath}/${componentName}.js`, fileContent, () => {
+    console.log(`Test file for ${componentPath} was created! 📸`);
+  });
 }
 
 module.exports = {
