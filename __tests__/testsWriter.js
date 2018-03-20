@@ -1,4 +1,4 @@
-const generateTest = require('./../writer').generateTest;
+const generateTest = require('./../testsWriter').generateTest;
 
 const expectedTestContent =
 `test(\'ComponentName TestID\', () => {
