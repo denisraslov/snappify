@@ -1,6 +1,6 @@
 {
   "name": "snappify",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "A generator of Jest snapshot based tests for React components written with TypeScript",
   "main": "index.js",
   "scripts": {
