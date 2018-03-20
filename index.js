@@ -1,6 +1,6 @@
-const getPropsInterfaceTypes = require('./reader.js').getPropsInterfaceTypes;
-const generateValue = require('./valuesGenerator.js');
-const writeTestFile = require('./writer.js').writeTestFile;
+const getPropsInterfaceTypes = require('./reader').getPropsInterfaceTypes;
+const generateValue = require('./valuesGenerator');
+const writeTestsFile = require('./testsWriter').writeTestsFile;
 
 const componentFilePaths = process.argv.slice(2, process.argv.length - 1);
 const testsRoot = process.argv.pop();
@@ -28,7 +28,7 @@ function createTestFileForComponent(componentPath) {
         .filter(item => item.type !== 'undefined' && item.value === undefined);
 
       if (notSupportedTypes.length === 0) {
-        writeTestFile(
+        writeTestsFile(
           getComponentNameFromPath(componentPath),
           componentPath,
           typesWithValues,
