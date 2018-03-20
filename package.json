@@ -1,5 +1,5 @@
 {
-  "name": "snapper",
+  "name": "snappify",
   "version": "0.0.1",
   "description": "A generator of Jest snapshot based tests for React components written with TypeScript",
   "main": "index.js",
@@ -28,12 +28,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/denisraslov/snapper.git"
+    "url": "https://github.com/denisraslov/snappify.git"
   },
   "bugs": {
-    "url": "https://github.com/denisraslov/snapper/issues"
+    "url": "https://github.com/denisraslov/snappify/issues"
   },
-  "homepage": "https://github.com/denisraslov/snapper#readme",
+  "homepage": "https://github.com/denisraslov/snappify#readme",
   "dependencies": {},
   "devDependencies": {
     "babel-preset-env": "^1.6.1",
