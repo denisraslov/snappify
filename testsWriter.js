@@ -27,9 +27,15 @@ function generateTest(componentName, id, propsText) {
 }
 
 function createFolder(path) {
-  if (!fs.existsSync(path)){
-    fs.mkdirSync(path);
-  }
+  const folders = path.split('/');
+  
+  folders.forEach((folder, i) => {
+    const folderPath = folders.slice(0, i + 1).join('/');
+
+    if (!fs.existsSync(folderPath)){
+      fs.mkdirSync(folderPath);
+    }
+  });
 }
 
 function generateComponentImportStatement(componentName, enums) {
