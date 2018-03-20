@@ -28,7 +28,7 @@ function generateTest(componentName, id, propsText) {
 
 function createFolder(path) {
   const folders = path.split('/');
-  
+
   folders.forEach((folder, i) => {
     const folderPath = folders.slice(0, i + 1).join('/');
 
@@ -110,9 +110,16 @@ async function writeTestsFile(
     createFolder(testPath);
   }
 
-  writeFile(`${testPath}/${componentName}.js`, fileContent, () => {
-    console.log(`Test file for ${componentPath} was created! 📸`);
-  });
+  const testsFileName = `${testPath}/${componentName}.js`;
+  
+  if (!fs.existsSync(testsFileName)){
+    writeFile(`${testPath}/${componentName}.js`, fileContent, () => {
+      console.log(`Test file for ${componentPath} was created! 📸`);
+    });
+  } else {
+      console.log(`⚠️ ${testsFileName} was already created before. ` +
+        `The file was not overwritten.`)
+  }
 }
 
 module.exports = {
