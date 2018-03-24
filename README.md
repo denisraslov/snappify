@@ -12,7 +12,7 @@
 
 However, if you write components with [TypeScript](https://www.typescriptlang.org/), you have an interface describing the types of the props. There is no reason to fill props up manually with random values in your tests. It could be done automatically based on the described types. That is what `Snappify` does. 
 
- **`Snappify` generates files with tests for your React components. You just run them.** ✨
+ `Snappify` generates files with tests for your React components. You just run them. ✨
 
 ## Quick Overview
 
