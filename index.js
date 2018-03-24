@@ -7,15 +7,9 @@ const writeTestsFile = require('./src/testsWriter').writeTestsFile;
 const componentFilePaths = process.argv.slice(2, process.argv.length - 1);
 const testsRoot = process.argv.pop();
 
-function getComponentNameFromPath(path) {
-  return path
-    .split('/').pop()
-    .split('.').shift();
-}
-
 function createTestFileForComponent(componentPath) {
   getPropsInterfaceTypes(componentPath)
-    .then(({ types, enums }) => {
+    .then(({ name, types, enums }) => {
       const typesWithValues = types.map((item) => {
         return Object.assign(item, {
           value: generateValue(item.type, item.name, enums)
@@ -31,7 +25,7 @@ function createTestFileForComponent(componentPath) {
 
       if (notSupportedTypes.length === 0) {
         writeTestsFile(
-          getComponentNameFromPath(componentPath),
+          name,
           componentPath,
           typesWithValues,
           enums,

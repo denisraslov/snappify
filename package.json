@@ -21,8 +21,7 @@
   "bin": "index.js",
   "files": [
     "index.js",
-    "src",
-    "templates"
+    "src"
   ],
   "author": "Denis Raslov <denis.raslov@yandex.ru>",
   "license": "MIT",

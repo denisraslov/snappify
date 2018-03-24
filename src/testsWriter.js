@@ -1,7 +1,27 @@
 const fs = require('fs');
-const readFile = require('./reader.js').readFile;
-const generateAllPropAttributes = require('./propsGenerator.js').generateAllPropAttributes;
-const generateRequiredPropAttributes = require('./propsGenerator.js').generateRequiredPropAttributes;
+const readFile = require('./reader').readFile;
+const generateAllPropAttributes = require('./propsGenerator').generateAllPropAttributes;
+const generateRequiredPropAttributes = require('./propsGenerator').generateRequiredPropAttributes;
+
+const testsFileTemplate =
+`import React from 'react';
+import renderer from 'react-test-renderer';
+
+import $COMPONENT_IMPORT from '$COMPONENT_PATH';
+
+$TESTS`;
+
+const testTemplate =
+`test('$COMPONENT_NAME $TEST_ID', () => {
+  const tree = renderer.create(
+    <$COMPONENT_NAME
+      $COMPONENT_PROPS
+    />
+  ).toJSON();
+
+  expect(tree).toMatchSnapshot();
+});
+`;
 
 function writeFile(fileName, content, callback) {
   fs.writeFile(fileName, content, (err) => {
@@ -11,19 +31,16 @@ function writeFile(fileName, content, callback) {
 }
 
 function generateTest(componentName, id, propsText) {
-  return new Promise((resolve) => {
-    readFile('templates/testTemplate.tpl', (template) => {
-      let testContent = template.replace(/\$COMPONENT_NAME/g, componentName);
-      testContent = testContent
-        .replace(/\$TEST_ID/g, id)
-        .replace(
-          /\$COMPONENT_PROPS/g,
-          propsText
-        ) + '\n';
+  let testContent = testTemplate.replace(/\$COMPONENT_NAME/g, componentName);
 
-      resolve(testContent);
-    });
-  });
+  testContent = testContent
+    .replace(/\$TEST_ID/g, id)
+    .replace(
+      /\$COMPONENT_PROPS/g,
+      propsText
+    ) + '\n';
+
+    return testContent;
 }
 
 function createFolder(path) {
@@ -50,47 +67,48 @@ function generateComponentImportStatement(componentName, enums) {
   return result;
 }
 
-async function generateTestsFile(
+function generateTestsFile(
   componentPath,
   componentName,
   enums,
   props
 ) {
-    const allPropsTestContent = await generateTest(
-      componentName,
-      'with all the props',
-      generateAllPropAttributes(props)
-    );
+  const allPropsTestContent = generateTest(
+    componentName,
+    'with all the props',
+    generateAllPropAttributes(props)
+  );
 
-    const requiredPropsTestContent = await generateTest(
-      componentName,
-      'with the required props',
-      generateRequiredPropAttributes(props)
-    );
+  const requiredPropsTestContent = generateTest(
+    componentName,
+    'with the required props',
+    generateRequiredPropAttributes(props)
+  );
 
-    return new Promise((resolve) => {
+  let fileContent = testsFileTemplate.replace(/\$COMPONENT_IMPORT/g,
+    generateComponentImportStatement(componentName, enums));
+  fileContent = fileContent.replace(/\$COMPONENT_PATH/g, componentPath);
+  fileContent = fileContent.replace(/\$TESTS/g,
+    allPropsTestContent + requiredPropsTestContent
+  );
 
-    readFile('templates/fileTemplate.tpl', (content) => {
-      let fileContent = content.replace(/\$COMPONENT_IMPORT/g,
-        generateComponentImportStatement(componentName, enums));
-      fileContent = fileContent.replace(/\$COMPONENT_PATH/g, componentPath);
-      fileContent = fileContent.replace(/\$TESTS/g,
-        allPropsTestContent + requiredPropsTestContent
-      );
-
-      resolve(fileContent);
-    });
-  });
+  return fileContent;
 }
 
-async function writeTestsFile(
+function getComponentNameFromPath(path) {
+  return path
+    .split('/').pop()
+    .split('.').shift();
+}
+
+function writeTestsFile(
   componentName,
   componentPath,
   props,
   enums,
   testsRoot
 ) {
-  const fileContent = await generateTestsFile(
+  const fileContent = generateTestsFile(
     componentPath,
     componentName,
     enums,
@@ -110,10 +128,11 @@ async function writeTestsFile(
     createFolder(testPath);
   }
 
-  const testsFileName = `${testPath}/${componentName}.js`;
-  
+  const testsFileName =
+    `${testPath}/${getComponentNameFromPath(componentPath)}.js`;
+
   if (!fs.existsSync(testsFileName)){
-    writeFile(`${testPath}/${componentName}.js`, fileContent, () => {
+    writeFile(testsFileName, fileContent, () => {
       console.log(`Test file for ${componentPath} was created! 📸`);
     });
   } else {

@@ -6,28 +6,46 @@ function readFile(fileName, callback) {
       callback(data);
   });
 }
-// export enum ButtonTypes {
 
 function findExportedEnums(text, fileName) {
-    const enumRegExp = /export enum(.*?){(.*?)}/g;
-    const enumMatches = text.match(enumRegExp);
+  const enumRegExp = /export enum(.*?){(.*?)}/g;
+  const enumMatches = text.match(enumRegExp);
 
-    if (enumMatches) {
-      const enums = enumMatches.map((matchText) => {
-        const enumMatch = (/export enum(.*?){(.*?)}/g).exec(matchText);
-        const enumName = enumMatch[1].trim();
-        const enumItems = enumMatch[2].split(',').map(item => item.trim());
+  if (enumMatches) {
+    const enums = enumMatches.map((matchText) => {
+      const enumMatch = (/export enum(.*?){(.*?)}/g).exec(matchText);
+      const enumName = enumMatch[1].trim();
+      const enumItems = enumMatch[2].split(',').map(item => item.trim());
 
-        return {
-          name: enumName,
-          items: enumItems
-        };
-      });
+      return {
+        name: enumName,
+        items: enumItems
+      };
+    });
 
-      return enums;
+    return enums;
+  }
+}
+
+function findComponentName(text, fileName) {
+  const statelessComponentNameRegExp = /(.*):(.*?)React.StatelessComponent/g;
+  const statelessComponentMatches = statelessComponentNameRegExp.exec(text);
+  let componentName;
+
+  if (statelessComponentMatches) {
+    componentName = statelessComponentMatches[1].trim().split(' ').pop().trim();
+  } else {
+    const componentNameRegExp =
+      /class(.*?)extends(.*?)React.(Component|PureComponent|StatelessComponent)/g;
+    const componentMatches = componentNameRegExp.exec(text);
+
+    if (componentMatches) {
+      componentName = componentMatches[1].trim().split(' ').pop().trim();
     }
   }
 
+  return componentName;
+}
 
 function findPropsInterface(text, fileName) {
     const interfaceNameRegExp = /React.(Component|PureComponent|StatelessComponent)<(.*?)(>|,)/g;
@@ -78,11 +96,13 @@ function getPropsInterfaceTypes(fileName) {
     readFile(fileName, (content) => {
       const contentWithoutComments = content.replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '');
       const contentWithoutLineBreaks = contentWithoutComments.replace(/\n|\r/g, '');
+
+      const name = findComponentName(contentWithoutLineBreaks.trim(), fileName);
       const types = findPropsInterface(contentWithoutLineBreaks.trim(), fileName);
       const enums = findExportedEnums(contentWithoutLineBreaks.trim(), fileName);
 
       if (types) {
-        resolve({ types, enums });
+        resolve({ name, types, enums });
       } else {
         reject();
       }

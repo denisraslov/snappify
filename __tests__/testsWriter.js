@@ -41,19 +41,18 @@ test(\'ComponentName with the required props\', () => {
   expect(tree).toMatchSnapshot();
 });
 
-
 `;
 
-test('Test generation', async () => {
-  const testContent = await generateTest(
+test('Test generation', () => {
+  const testContent = generateTest(
     'ComponentName', 'TestID', 'id=1'
   );
 
    expect(testContent).toEqual(expectedTestContent);
 });
 
-test('Tests file generation', async () => {
-  const testContent = await generateTestsFile(
+test('Tests file generation', () => {
+  const testContent = generateTestsFile(
     'components/index.tsx',
     'ComponentName',
     [
