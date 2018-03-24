@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const getPropsInterfaceTypes = require('./src/reader').getPropsInterfaceTypes;
+const getPropsInterfaceTypes = require('./src/componentReader').getPropsInterfaceTypes;
 const generateValue = require('./src/valuesGenerator');
 const writeTestsFile = require('./src/testsWriter').writeTestsFile;
 

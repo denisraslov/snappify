@@ -1,5 +1,4 @@
 const fs = require('fs');
-const readFile = require('./reader').readFile;
 const generateAllPropAttributes = require('./propsGenerator').generateAllPropAttributes;
 const generateRequiredPropAttributes = require('./propsGenerator').generateRequiredPropAttributes;
 
