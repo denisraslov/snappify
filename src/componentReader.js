@@ -91,15 +91,21 @@ function findPropsInterface(text, fileName) {
     }
 }
 
+function prepareTextForParsing(text) {
+  const textWithoutComments = text.replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '');
+  const textWithoutLineBreaks = textWithoutComments.replace(/\n|\r/g, '');
+
+  return textWithoutLineBreaks.trim();
+}
+
 function getPropsInterfaceTypes(fileName) {
   return new Promise((resolve, reject) => {
     readFile(fileName, (content) => {
-      const contentWithoutComments = content.replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '');
-      const contentWithoutLineBreaks = contentWithoutComments.replace(/\n|\r/g, '');
+      const preparedContent = prepareTextForParsing(content);
 
-      const name = findComponentName(contentWithoutLineBreaks.trim(), fileName);
-      const types = findPropsInterface(contentWithoutLineBreaks.trim(), fileName);
-      const enums = findExportedEnums(contentWithoutLineBreaks.trim(), fileName);
+      const name = findComponentName(preparedContent, fileName);
+      const types = findPropsInterface(preparedContent, fileName);
+      const enums = findExportedEnums(preparedContent, fileName);
 
       if (types) {
         resolve({ name, types, enums });
@@ -112,5 +118,8 @@ function getPropsInterfaceTypes(fileName) {
 
 module.exports = {
   readFile,
+  prepareTextForParsing,
+  findComponentName,
+  findExportedEnums,
   getPropsInterfaceTypes
 };
