@@ -98,7 +98,7 @@ function prepareTextForParsing(text) {
   return textWithoutLineBreaks.trim();
 }
 
-function getPropsInterfaceTypes(fileName) {
+function parseComponent(fileName) {
   return new Promise((resolve, reject) => {
     readFile(fileName, (content) => {
       const preparedContent = prepareTextForParsing(content);
@@ -121,5 +121,6 @@ module.exports = {
   prepareTextForParsing,
   findComponentName,
   findExportedEnums,
-  getPropsInterfaceTypes
+  findPropsInterface,
+  parseComponent
 };
