@@ -48,13 +48,21 @@ function generatePrimitiveValue(type, fieldName, enums) {
   }
 }
 
+function isTypeSupported(type, enums) {
+  return generatePrimitiveValue(type, undefined, enums) !== undefined;
+}
+
 function generateArrayValue(type, enums) {
-  return `[${generatePrimitiveValue(type, undefined, enums)}, ` +
-    `${generatePrimitiveValue(type, undefined, enums)}]`;
+  if (isTypeSupported(type, enums)) {
+    return `[${generatePrimitiveValue(type, undefined, enums)}, ` +
+      `${generatePrimitiveValue(type, undefined, enums)}]`
+  };
 }
 
 function generateFunctionValue(type, enums) {
-  return `() => ${generatePrimitiveValue(type, undefined, enums)}`;
+  if (isTypeSupported(type, enums)) {
+    return `() => ${generatePrimitiveValue(type, undefined, enums)}`;
+  }
 }
 
 function generateValue(type, fieldName, enums) {
@@ -63,23 +71,17 @@ function generateValue(type, fieldName, enums) {
   if (!value) {
     if (type.includes('[]')) {
       const itemType = type.substr(type, type.length - 2);
-      if (itemType) {
-        value = generateArrayValue(itemType, enums);
-      }
+      value = generateArrayValue(itemType, enums);
     }
 
     if (type.includes('Array')) {
       const itemType = type.substr(6, type.length - 7);
-      if (itemType) {
-        value = generateArrayValue(itemType, enums);
-      }
+      value = generateArrayValue(itemType, enums);
     }
 
     if (type.includes('=>')) {
       const returnType = type.split('=>').pop();
-      if (returnType) {
-        value = generateFunctionValue(returnType, enums);
-      }
+      value = generateFunctionValue(returnType, enums);
     }
   }
 
