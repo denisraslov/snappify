@@ -60,7 +60,9 @@ my-app
 
 ## How it works
 
-`Snappify` takes a component and its interface, and generates a file with snapshot-based tests with **up to 10 test cases each**. The props values for test cases be **generated with uniformly distributed sets of random values based on the types of the props**. That means you get the count of test cases that you can take control of, but they are still cover the details of your components as wide as it possible in this situation. 
+`Snappify` takes a component and its interface, and generates a file with snapshot-based tests with **up to 10 test cases each**. 
+
+The props values for test cases be **generated with uniformly distributed sets of random values based on the types of the props**. That means you get the count of test cases that you can take control of, but they are still cover the details of your components as wide as it possible in this situation. 
 
 ## An example
 
