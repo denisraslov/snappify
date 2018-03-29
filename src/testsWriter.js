@@ -1,6 +1,6 @@
 const fs = require('fs');
-const generateAllPropAttributes = require('./propsGenerator').generateAllPropAttributes;
-const generateRequiredPropAttributes = require('./propsGenerator').generateRequiredPropAttributes;
+const getValuesSetForTypes = require('./valuesGenerator').getValuesSetForTypes;
+const generatePropAttributes = require('./propsGenerator').generatePropAttributes;
 
 const testsFileTemplate =
 `import React from 'react';
@@ -66,30 +66,44 @@ function generateComponentImportStatement(componentName, enums) {
   return result;
 }
 
+function getTestContents(componentName, props) {
+  const TESTS_PER_FILE = 10;
+  const valuesSet = getValuesSetForTypes(props);
+
+  const tests = valuesSet
+  .filter((test, i) => {
+    if (valuesSet.length > TESTS_PER_FILE) {
+      const segmentSize = Math.round(valuesSet.length / TESTS_PER_FILE);
+
+      return i % segmentSize === 0;
+    } else {
+      return true;
+    }
+  })
+  .slice(0, TESTS_PER_FILE)
+  .map((values, i) => {
+    return generateTest(
+      componentName,
+      `Case #${i + 1}`,
+      generatePropAttributes(props, values)
+    );
+  })
+
+  return tests;
+}
+
 function generateTestsFile(
   componentPath,
   componentName,
   enums,
   props
 ) {
-  const allPropsTestContent = generateTest(
-    componentName,
-    'with all the props',
-    generateAllPropAttributes(props)
-  );
-
-  const requiredPropsTestContent = generateTest(
-    componentName,
-    'with the required props',
-    generateRequiredPropAttributes(props)
-  );
+  const tests = getTestContents(componentName, props).join('');
 
   let fileContent = testsFileTemplate.replace(/\$COMPONENT_IMPORT/g,
     generateComponentImportStatement(componentName, enums));
   fileContent = fileContent.replace(/\$COMPONENT_PATH/g, componentPath);
-  fileContent = fileContent.replace(/\$TESTS/g,
-    allPropsTestContent + requiredPropsTestContent
-  );
+  fileContent = fileContent.replace(/\$TESTS/g, tests);
 
   return fileContent;
 }
@@ -141,6 +155,7 @@ function writeTestsFile(
 }
 
 module.exports = {
+  getTestContents,
   generateTest,
   generateTestsFile,
   writeTestsFile

@@ -1,45 +1,30 @@
-const generateAllPropAttributes = require('./../src/propsGenerator').generateAllPropAttributes;
-const generateRequiredPropAttributes = require('./../src/propsGenerator').generateRequiredPropAttributes;
+const generatePropAttributes = require('./../src/propsGenerator').generatePropAttributes;;
 
 const PROP_DELIMITER = '\n      ';
 
 const propTypes = [
   {
-    name: 'name',
-    value: 'value',
-    required: true
+    name: 'name'
   },
   {
-    name: 'age',
-    value: 28,
-    required: true
+    name: 'age'
   },
   {
-    name: 'isValid',
-    value: false,
-    required: false
+    name: 'isValid'
   },
   {
-    name: 'onClick',
-    value: '() => 1',
-    required: false
+    name: 'onClick'
   },
   {
-    name: 'items',
-    value: '[1,2,3]',
-    required: false
+    name: 'items'
   }
 ];
 
-test('All props generation', () => {
-    expect(generateAllPropAttributes(propTypes)).toBe(
-      ['name={value}', 'age={28}', 'isValid={false}',
-        'onClick={() => 1}', 'items={[1,2,3]}'].join(PROP_DELIMITER)
-    );
-});
+const values = ['\'value\'', '28', 'false', undefined, 'null'];
 
-test('Required props generation', () => {
-    expect(generateRequiredPropAttributes(propTypes)).toBe(
-      ['name={value}', 'age={28}'].join(PROP_DELIMITER)
+test('Props generation', () => {
+    expect(generatePropAttributes(propTypes, values)).toBe(
+      ['name={\'value\'}', 'age={28}',
+        'isValid={false}', 'items={null}'].join(PROP_DELIMITER)
     );
 });

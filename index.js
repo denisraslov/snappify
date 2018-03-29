@@ -10,34 +10,35 @@ const testsRoot = process.argv.pop();
 function createTestFileForComponent(componentPath) {
   parseComponent(componentPath)
     .then(({ name, types, enums }) => {
-      const typesWithValues = types.map((item) => {
-        return Object.assign(item, {
-          value: generateValue(item.type, item.name, enums)
-        });
-      });
 
       // console.log(`Interface types with values: ` +
       //   `\n${typesWithValues.map(obj => JSON.stringify(obj) + '\n')}`);
 
-      // A type is not supported if we didn't generate a value for it.
-      const notSupportedTypes = typesWithValues
-        .filter(item => item.type !== 'undefined' && item.value === undefined);
+      writeTestsFile(
+        name,
+        componentPath,
+        types,
+        enums,
+        testsRoot
+      );
 
-      if (notSupportedTypes.length === 0) {
-        writeTestsFile(
-          name,
-          componentPath,
-          typesWithValues,
-          enums,
-          testsRoot
-        );
-      } else {
-        console.log(`⚠️ The props of ${componentPath} contain not supported types: ` +
-          notSupportedTypes.map(item => item.type).join(',') +
-          `. This file was skipped.`)
-      }
+      // if (notSupportedTypes.length === 0) {
+      //   writeTestsFile(
+      //     name,
+      //     componentPath,
+      //     typesWithValues,
+      //     enums,
+      //     testsRoot
+      //   );
+      // } else {
+      //   console.log(`⚠️ The props of ${componentPath} contain not supported types: ` +
+      //     notSupportedTypes.map(item => item.type).join(',') +
+      //     `. This file was skipped.`)
+      // }
     })
-    .catch((error) => {});
+    .catch((error) => {
+      console.log(error);
+    });
 }
 
 // Walk the files with the components

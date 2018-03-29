@@ -1,18 +1,20 @@
 const PROP_DELIMITER = '\n      ';
 
-function generateAllPropAttributes(props) {
-  return props.map((prop) => {
-    return `${prop.name}={${prop.value}}`;
-  }).join(PROP_DELIMITER);
-}
+function generatePropAttributes(props, values) {
+  return props
+    .map((prop, i) => {
+      const value = values[i];
 
-function generateRequiredPropAttributes(props) {
-  return generateAllPropAttributes(
-    props.filter(item => item.required)
-  );
+      return value !== undefined
+        ? `${prop.name}={${value}}`
+        : undefined;
+    })
+    .filter((propText) => {
+      return propText !== undefined;
+    })
+    .join(PROP_DELIMITER);
 }
 
 module.exports = {
-  generateAllPropAttributes,
-  generateRequiredPropAttributes
+  generatePropAttributes
 };

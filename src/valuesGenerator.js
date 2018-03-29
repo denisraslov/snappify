@@ -1,91 +1,124 @@
-function getRandomInt(min, max) {
-  var rand = min - 0.5 + Math.random() * (max - min + 1)
-  rand = Math.round(rand);
-  return rand;
-}
+function getTypeValuesRange(type, isRequired, enums) {
+  let range;
 
-function generatePrimitiveValue(type, fieldName, enums) {
   if (type === 'void' || type === 'undefined') {
-    return 'undefined';
+    range = ['undefined'];
   }
 
   if (type === 'null') {
-    return 'null';
+    range = ['null'];
   }
 
   if (type === 'string') {
-    return fieldName
-      ? `\'${fieldName} value\'`
-      : '\'value\'';
+    range = ['\'\'', '\'value\''];
   }
 
   if (type === 'number' || type === 'any') {
-    return getRandomInt(0, 100);
+    range = [-10, 0, 10];
   }
 
   if (type === 'boolean') {
-    return !!getRandomInt(0, 1);
+    range = [false, true];
   }
 
   if (type === 'object') {
-    return '{}';
+    range = ['{}'];
   }
 
   if (type === 'React.ReactNode') {
-    return '<div />';
+    range = ['<div />'];
   }
 
   if (type === 'React.CSSProperties') {
-    return '{ padding: 0 }';
+    range = ['{}', '{ padding: 0 }'];
   }
 
   if (enums) {
     const typeEnum = enums.find(item => item.name === type);
     if (typeEnum) {
-      const enumItem = typeEnum.items[getRandomInt(0, typeEnum.items.length - 1)];
-      return `${type}.${enumItem}`;
-    }
-  }
-}
-
-function isTypeSupported(type, enums) {
-  return generatePrimitiveValue(type, undefined, enums) !== undefined;
-}
-
-function generateArrayValue(type, enums) {
-  if (isTypeSupported(type, enums)) {
-    return `[${generatePrimitiveValue(type, undefined, enums)}, ` +
-      `${generatePrimitiveValue(type, undefined, enums)}]`
-  };
-}
-
-function generateFunctionValue(type, enums) {
-  if (isTypeSupported(type, enums)) {
-    return `() => ${generatePrimitiveValue(type, undefined, enums)}`;
-  }
-}
-
-function generateValue(type, fieldName, enums) {
-  let value = generatePrimitiveValue(type, fieldName, enums);
-
-  if (!value) {
-    if (type.includes('[]')) {
-      const itemType = type.substr(type, type.length - 2);
-      value = generateArrayValue(itemType, enums);
-    }
-
-    if (type.includes('Array')) {
-      const itemType = type.substr(6, type.length - 7);
-      value = generateArrayValue(itemType, enums);
-    }
-
-    if (type.includes('=>')) {
-      const returnType = type.split('=>').pop();
-      value = generateFunctionValue(returnType, enums);
+      range = typeEnum.items;
     }
   }
 
-  return value;
+  if (type.includes('[]') || type.includes('Array')) {
+    const itemType = type.includes('Array')
+      ? type.substr(type, type.length - 2)
+      : type.substr(6, type.length - 7);
+
+    const itemTypeRange = getTypeValuesRange(itemType, true, enums);
+
+    if (itemTypeRange) {
+      range = [
+        [],
+        [itemTypeRange[0]]
+      ];
+    }
+  }
+
+  if (type.includes('=>')) {
+    const returnType = type.split('=>').pop();
+    const returnTypeRange = getTypeValuesRange(returnType, true, enums);
+
+    if (returnTypeRange) {
+      range = returnTypeRange.map(
+        value => `() => ${value}`
+      );
+    }
+  }
+
+  if (range && !isRequired) {
+    // undefined means an option when we won't add a prop to a component
+    range.push(undefined);
+  }
+
+  return range;
 }
 
-module.exports = generateValue;
+// Get all the combinations of values for their defined ranges.
+// Ranges could be like:
+// [false, true]
+// [-10, 0 ,10 ]
+// ['', 'value']
+function getValuesSetForRanges(ranges) {
+  let valuesSets = [];
+
+  for (let rangeIndex = 0; rangeIndex < ranges.length; rangeIndex++) {
+    const values = ranges[rangeIndex];
+
+    // exception if values are not defined
+
+    if (valuesSets.length === 0) {
+      valuesSets.push(
+        ...(values.map(value => [value]))
+      );
+    } else {
+      const newValuesSets = [];
+
+      for (let setIndex = 0; setIndex < valuesSets.length; setIndex++) {
+        const valuesSet = valuesSets[setIndex];
+
+        for (let valueIndex = 0; valueIndex < values.length; valueIndex++) {
+          const value = values[valueIndex];
+          const newValuesSet = valuesSet.concat([value]);
+
+          newValuesSets.push(newValuesSet);
+        }
+      }
+
+      valuesSets = newValuesSets;
+    }
+  }
+
+  return valuesSets;
+}
+
+function getValuesSetForTypes(props) {
+  return getValuesSetForRanges(
+    props.map(prop => getTypeValuesRange(prop.type, prop.required))
+  );
+}
+
+module.exports = {
+  getValuesSetForRanges,
+  getValuesSetForTypes
+};
