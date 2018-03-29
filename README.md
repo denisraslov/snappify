@@ -59,7 +59,12 @@ my-app
 ```
 
 ## How it works
-A usual React component written with TypeScript looks like this:
+
+`Snappify` takes a component and its interface, and generates a file with snapshot-based tests with **up to 10 test cases each**. The props values for test cases be **generated with uniformly distributed sets of random values based on the types of the props**. That means you get the count of test cases that you can take control of, but they are still cover the details of your components as wide as it possible in this situation. 
+
+## An example
+
+Here we have the `Button` component that have the declared interface for its props called `IButtonProps`. 
 
 ```ts
 import * as React from 'react';
@@ -84,9 +89,7 @@ const Button: React.StatelessComponent<IButtonProps> = (props) => {
 export default Button;
 ```
 
-Here we have the `Button` component that have the declared interface for its props called `IButtonProps`. 
-
-`Snappify` takes this component and its interface, and generates a file with snapshot-based tests. The props values be taken randomly based on their types:
+`Snappify` will generate a file with tests for this component that will looks like:
 
 ```jsx
 import React from 'react';
@@ -94,12 +97,13 @@ import renderer from 'react-test-renderer';
 
 import Button from 'components/Button.tsx';
 
-test('Button with all the props', () => {
+test('Button case #1', () => {
     const tree = renderer.create(
         <Button
-            className={'className value'}
+            // some randomly generated values for props
+            className={'value'}
             isDisabled={true}
-            onClick={() => {}}
+            onClick={() => undefined}
             children={<div />}
         />
     ).toJSON();
@@ -107,15 +111,19 @@ test('Button with all the props', () => {
     expect(tree).toMatchSnapshot();
 });
 
-test('Button with the required props', () => {
+test('Button case #2', () => {
     const tree = renderer.create(
         <Button
+            // another set of randomly generated values for props
+            // (the not required props were skipped)
             children={<div />}
         />
     ).toJSON();
 
     expect(tree).toMatchSnapshot();
 });
+
+// Other test cases go here...
 ```
 
 Right now `Snappify` generates two combinations of props' values only: **for all the props** and **for the required props**. We condiser increase of the quantity of the combinations as a future improvement.
