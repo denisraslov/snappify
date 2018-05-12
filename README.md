@@ -25,12 +25,12 @@ npm install -g snappify
 Run `Snappify` inside of a project folder with a configured glob pattern of the React components files and a name of a root folder for generated tests:
 
 ```sh
-snappify components/**/*.tsx __tests__
+snappify components/**/*.tsx tests
 ```
 
-It will create a directory called `__tests__` inside the current folder.
+It will create a directory called `tests` inside the current folder.
 
-Inside that directory, it will generate the files with snapshot-based tests for every of the components from the files that matched to `components/**/*.js` pattern. 
+Inside that directory, it will generate the files with snapshot-based tests for every of the components from the files that matched to `components/**/*.tsx` pattern. 
 
 ## Folders structure
 The structure of the included folders with tests will be the same as the structure of the folders with components. The names of the files with tests will be the same as the names of the files with the components.
