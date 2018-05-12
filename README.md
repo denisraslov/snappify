@@ -131,3 +131,5 @@ test('Button case #2', () => {
 ## Supported TypeScript types
 
 Right now `Snappify` supports the [basic types of TypeScript](https://www.typescriptlang.org/docs/handbook/basic-types.html). It also supports a few of the React types: `React.ReactNode`, `JSX.Element` and `React.CSSProperties`. We condiser increase of the supported types as a future improvement.
+
+## Supported TypeScript syntax
