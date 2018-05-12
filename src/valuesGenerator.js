@@ -25,7 +25,7 @@ function getTypeValuesRange(type, isRequired, enums) {
     range = ['{}'];
   }
 
-  if (type === 'React.ReactNode') {
+  if (type === 'React.ReactNode' || type === 'JSX.Element') {
     range = ['<div />'];
   }
 
