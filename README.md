@@ -50,7 +50,7 @@ You will get this structure of the folders with the tests (when you run the comm
 
 ```
 my-app
-├── __tests__
+├── tests
 │   └── Header.js
 │   └── Content.js
 │   └── Footer.js
