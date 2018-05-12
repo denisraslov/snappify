@@ -1,5 +1,7 @@
 const fs = require('fs');
-const getValuesSetForTypes = require('./valuesGenerator').getValuesSetForTypes;
+const valuesGenerator = require('./valuesGenerator');
+const getValuesSetForTypes = valuesGenerator.getValuesSetForTypes;
+const getInvalidTypes = valuesGenerator.getInvalidTypes;
 const generatePropAttributes = require('./propsGenerator').generatePropAttributes;
 
 const testsFileTemplate =
@@ -66,9 +68,9 @@ function generateComponentImportStatement(componentName, enums) {
   return result;
 }
 
-function getTestContents(componentName, props) {
+function getTestContents(componentName, props, enums) {
   const TESTS_PER_FILE = 10;
-  const valuesSet = getValuesSetForTypes(props);
+  const valuesSet = getValuesSetForTypes(props, enums);
 
   const tests = valuesSet
   .filter((test, i) => {
@@ -87,7 +89,7 @@ function getTestContents(componentName, props) {
       `Case #${i + 1}`,
       generatePropAttributes(props, values)
     );
-  })
+  });
 
   return tests;
 }
@@ -98,14 +100,22 @@ function generateTestsFile(
   enums,
   props
 ) {
-  const tests = getTestContents(componentName, props).join('');
+  const invalidTypes = getInvalidTypes(props, enums);
 
-  let fileContent = testsFileTemplate.replace(/\$COMPONENT_IMPORT/g,
-    generateComponentImportStatement(componentName, enums));
-  fileContent = fileContent.replace(/\$COMPONENT_PATH/g, componentPath);
-  fileContent = fileContent.replace(/\$TESTS/g, tests);
+  if (invalidTypes.length) {
+    console.log(`⚠️ The props of ${componentPath} contain not supported types: ` +
+      invalidTypes.map(item => item.type).join(',') +
+      `. This file was skipped.`)
+  } else {
+      const tests = getTestContents(componentName, props, enums).join('');
 
-  return fileContent;
+      let fileContent = testsFileTemplate.replace(/\$COMPONENT_IMPORT/g,
+        generateComponentImportStatement(componentName, enums));
+      fileContent = fileContent.replace(/\$COMPONENT_PATH/g, componentPath);
+      fileContent = fileContent.replace(/\$TESTS/g, tests);
+
+      return fileContent;
+  }
 }
 
 function getComponentNameFromPath(path) {

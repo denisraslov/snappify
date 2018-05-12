@@ -42,8 +42,8 @@ function getTypeValuesRange(type, isRequired, enums) {
 
   if (type.includes('[]') || type.includes('Array')) {
     const itemType = type.includes('Array')
-      ? type.substr(type, type.length - 2)
-      : type.substr(6, type.length - 7);
+      ? type.substr(6, type.length - 7)
+      : type.substr(0, type.length - 2);
 
     const itemTypeRange = getTypeValuesRange(itemType, true, enums);
 
@@ -85,8 +85,6 @@ function getValuesSetForRanges(ranges) {
   for (let rangeIndex = 0; rangeIndex < ranges.length; rangeIndex++) {
     const values = ranges[rangeIndex];
 
-    // exception if values are not defined
-
     if (valuesSets.length === 0) {
       valuesSets.push(
         ...(values.map(value => [value]))
@@ -112,13 +110,28 @@ function getValuesSetForRanges(ranges) {
   return valuesSets;
 }
 
-function getValuesSetForTypes(props) {
-  return getValuesSetForRanges(
-    props.map(prop => getTypeValuesRange(prop.type, prop.required))
-  );
+function getRangesForTypes(props, enums) {
+  return props.map(prop => getTypeValuesRange(prop.type, prop.required, enums));
+}
+
+function getValuesSetForTypes(props, enums) {
+  const ranges = getRangesForTypes(props, enums);
+
+  return getValuesSetForRanges(ranges);
+}
+
+function getInvalidTypes(props, enums) {
+  const ranges = getRangesForTypes(props, enums);
+
+  return props.filter((prop, i) => {
+    const range = ranges[i];
+    return !range;
+  });
 }
 
 module.exports = {
   getValuesSetForRanges,
-  getValuesSetForTypes
+  getValuesSetForTypes,
+  getTypeValuesRange,
+  getInvalidTypes
 };

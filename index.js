@@ -21,28 +21,11 @@ function createTestFileForComponent(componentPath) {
         enums,
         testsRoot
       );
-
-      // if (notSupportedTypes.length === 0) {
-      //   writeTestsFile(
-      //     name,
-      //     componentPath,
-      //     typesWithValues,
-      //     enums,
-      //     testsRoot
-      //   );
-      // } else {
-      //   console.log(`⚠️ The props of ${componentPath} contain not supported types: ` +
-      //     notSupportedTypes.map(item => item.type).join(',') +
-      //     `. This file was skipped.`)
-      // }
     })
-    .catch((error) => {
-      console.log(error);
-    });
+    .catch((error) => {});
 }
 
 // Walk the files with the components
 componentFilePaths.forEach((componentPath) => {
-  // console.log(componentPath);
   createTestFileForComponent(componentPath);
 });
