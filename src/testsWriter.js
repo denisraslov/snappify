@@ -26,8 +26,8 @@ const testTemplate =
 
 function writeFile(fileName, content, callback) {
   fs.writeFile(fileName, content, (err) => {
-      if (err) throw err;
-      callback(content);
+    if (err) throw err;
+    callback(content);
   });
 }
 
@@ -41,7 +41,7 @@ function generateTest(componentName, id, propsText) {
       propsText
     ) + '\n';
 
-    return testContent;
+  return testContent;
 }
 
 function createFolder(path) {
@@ -50,7 +50,7 @@ function createFolder(path) {
   folders.forEach((folder, i) => {
     const folderPath = folders.slice(0, i + 1).join('/');
 
-    if (!fs.existsSync(folderPath)){
+    if (!fs.existsSync(folderPath)) {
       fs.mkdirSync(folderPath);
     }
   });
@@ -60,7 +60,7 @@ function generateComponentImportStatement(componentName, enums) {
   let result = componentName;
 
   if (enums) {
-    result += ', { '+ enums
+    result += ', { ' + enums
       .map(item => item.name)
       .join(', ') + ' }';
   }
@@ -73,23 +73,23 @@ function getTestContents(componentName, props, enums) {
   const valuesSet = getValuesSetForTypes(props, enums);
 
   const tests = valuesSet
-  .filter((test, i) => {
-    if (valuesSet.length > TESTS_PER_FILE) {
-      const segmentSize = Math.round(valuesSet.length / TESTS_PER_FILE);
+    .filter((test, i) => {
+      if (valuesSet.length > TESTS_PER_FILE) {
+        const segmentSize = Math.round(valuesSet.length / TESTS_PER_FILE);
 
-      return i % segmentSize === 0;
-    } else {
-      return true;
-    }
-  })
-  .slice(0, TESTS_PER_FILE)
-  .map((values, i) => {
-    return generateTest(
-      componentName,
-      `Case #${i + 1}`,
-      generatePropAttributes(props, values)
-    );
-  });
+        return i % segmentSize === 0;
+      } else {
+        return true;
+      }
+    })
+    .slice(0, TESTS_PER_FILE)
+    .map((values, i) => {
+      return generateTest(
+        componentName,
+        `Case #${i + 1}`,
+        generatePropAttributes(props, values)
+      );
+    });
 
   return tests;
 }
@@ -107,14 +107,14 @@ function generateTestsFile(
       invalidTypes.map(item => item.type).join(',') +
       `. This file was skipped.`)
   } else {
-      const tests = getTestContents(componentName, props, enums).join('');
+    const tests = getTestContents(componentName, props, enums).join('');
 
-      let fileContent = testsFileTemplate.replace(/\$COMPONENT_IMPORT/g,
-        generateComponentImportStatement(componentName, enums));
-      fileContent = fileContent.replace(/\$COMPONENT_PATH/g, componentPath);
-      fileContent = fileContent.replace(/\$TESTS/g, tests);
+    let fileContent = testsFileTemplate.replace(/\$COMPONENT_IMPORT/g,
+      generateComponentImportStatement(componentName, enums));
+    fileContent = fileContent.replace(/\$COMPONENT_PATH/g, componentPath);
+    fileContent = fileContent.replace(/\$TESTS/g, tests);
 
-      return fileContent;
+    return fileContent;
   }
 }
 
@@ -154,13 +154,13 @@ function writeTestsFile(
   const testsFileName =
     `${testPath}/${getComponentNameFromPath(componentPath)}.js`;
 
-  if (!fs.existsSync(testsFileName)){
+  if (!fs.existsSync(testsFileName)) {
     writeFile(testsFileName, fileContent, () => {
       console.log(`Test file for ${componentPath} was created! 📸`);
     });
   } else {
-      console.log(`⚠️ ${testsFileName} was already created before. ` +
-        `The file was not overwritten.`)
+    console.log(`⚠️ ${testsFileName} was already created before. ` +
+      `The file was not overwritten.`)
   }
 }
 

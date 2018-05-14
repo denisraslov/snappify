@@ -9,9 +9,9 @@ test('Values sets from ranges', () => {
     [false, true],
     [0, 1]
   ]))
-  .toEqual([
-    [false, 0], [false, 1], [true, 0], [true, 1]
-  ]);
+    .toEqual([
+      [false, 0], [false, 1], [true, 0], [true, 1]
+    ]);
 });
 
 test('Return undefined on a unknown type', () => {
@@ -30,9 +30,9 @@ test('Return invalid types', () => {
     type: 'string'
   }]).length).toEqual(1);
 
-    expect(getInvalidTypes([{
-      type: 'number'
-    }, {
-      type: 'string'
-    }]).length).toEqual(0);
+  expect(getInvalidTypes([{
+    type: 'number'
+  }, {
+    type: 'string'
+  }]).length).toEqual(0);
 });

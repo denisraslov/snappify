@@ -4,7 +4,7 @@
   "description": "A generator of Jest snapshot based tests for React components written with TypeScript",
   "main": "index.js",
   "scripts": {
-    "snapper": "node index.js",
+    "lint": "eslint */*.js",
     "test": "jest",
     "precommit": "npm test"
   },
@@ -37,6 +37,13 @@
   "devDependencies": {
     "babel-preset-env": "^1.6.1",
     "husky": "^0.14.3",
-    "jest": "^22.4.2"
-  }
+    "jest": "^22.4.2",
+    "lint-staged": "^7.1.0"
+  },
+  "lint-staged": {
+    "*.js": "eslint"
+  },
+  "pre-commit": [
+    "lint-staged"
+  ]
 }

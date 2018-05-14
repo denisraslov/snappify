@@ -3,7 +3,7 @@ const generateTestsFile = require('./../src/testsWriter').generateTestsFile;
 const getTestContents = require('./../src/testsWriter').getTestContents;
 
 const expectedTestContent =
-`test(\'ComponentName TestID\', () => {
+`test('ComponentName TestID', () => {
   const tree = renderer.create(
     <ComponentName
       id=1
@@ -21,7 +21,7 @@ import renderer from 'react-test-renderer';
 
 import ComponentName, { Enum1, Enum2 } from 'components/index.tsx';
 
-test(\'ComponentName Case #1', () => {
+test('ComponentName Case #1', () => {
   const tree = renderer.create(
     <ComponentName
       prop1={''}
@@ -32,7 +32,7 @@ test(\'ComponentName Case #1', () => {
   expect(tree).toMatchSnapshot();
 });
 
-test(\'ComponentName Case #2\', () => {
+test('ComponentName Case #2', () => {
   const tree = renderer.create(
     <ComponentName
       prop1={''}
@@ -43,7 +43,7 @@ test(\'ComponentName Case #2\', () => {
   expect(tree).toMatchSnapshot();
 });
 
-test(\'ComponentName Case #3', () => {
+test('ComponentName Case #3', () => {
   const tree = renderer.create(
     <ComponentName
       prop1={'value'}
@@ -54,7 +54,7 @@ test(\'ComponentName Case #3', () => {
   expect(tree).toMatchSnapshot();
 });
 
-test(\'ComponentName Case #4\', () => {
+test('ComponentName Case #4', () => {
   const tree = renderer.create(
     <ComponentName
       prop1={'value'}
@@ -85,7 +85,7 @@ test('Test generation', () => {
     'ComponentName', 'TestID', 'id=1'
   );
 
-   expect(testContent).toEqual(expectedTestContent);
+  expect(testContent).toEqual(expectedTestContent);
 });
 
 test('Tests file generation', () => {
@@ -103,7 +103,7 @@ test('Tests file generation', () => {
     propTypes
   );
 
-   expect(testContent).toEqual(expectedTestsFileContent);
+  expect(testContent).toEqual(expectedTestsFileContent);
 });
 
 test('Test cases count', () => {
