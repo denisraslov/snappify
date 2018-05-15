@@ -1,5 +1,9 @@
 const fs = require('fs');
 
+const logger = require('./logger');
+const logNoTSInterfaceFoundError = logger.logNoTSInterfaceFoundError;
+const logNoComponentWithTSInterfaceFoundError = logger.logNoComponentWithTSInterfaceFoundError;
+
 function readFile(fileName, callback) {
   fs.readFile(fileName, 'utf8', function(err, data) {
     if (err) throw err;
@@ -84,10 +88,10 @@ function findPropsInterface(text, fileName) {
 
       return types;
     } else {
-      console.log(`⚠️ Can't find a TypeScript props interface ${interfaceName} in ${fileName}. This file was skipped.`)
+      logNoTSInterfaceFoundError(fileName, interfaceName);
     }
   } else {
-    console.log(`⚠️ ${fileName} doesn't contain a React component with a TypeScript props interface. This file was skipped.`)
+    logNoComponentWithTSInterfaceFoundError(fileName);
   }
 }
 

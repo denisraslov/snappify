@@ -1,8 +1,15 @@
 const fs = require('fs');
+
 const valuesGenerator = require('./valuesGenerator');
 const getValuesSetForTypes = valuesGenerator.getValuesSetForTypes;
 const getInvalidTypes = valuesGenerator.getInvalidTypes;
+
 const generatePropAttributes = require('./propsGenerator').generatePropAttributes;
+
+const logger = require('./logger');
+const logTestsFileIsExistError = logger.logTestsFileIsExistError;
+const logTestCreatedMessage = logger.logTestCreatedMessage;
+const logNotSupportedTypesError = logger.logNotSupportedTypesError;
 
 const testsFileTemplate =
 `import React from 'react';
@@ -103,9 +110,9 @@ function generateTestsFile(
   const invalidTypes = getInvalidTypes(props, enums);
 
   if (invalidTypes.length) {
-    console.log(`⚠️ The props of ${componentPath} contain not supported types: ` +
-      invalidTypes.map(item => item.type).join(',') +
-      `. This file was skipped.`)
+    logNotSupportedTypesError(
+      invalidTypes.map(item => item.type)
+    );
   } else {
     const tests = getTestContents(componentName, props, enums).join('');
 
@@ -156,11 +163,10 @@ function writeTestsFile(
 
   if (!fs.existsSync(testsFileName)) {
     writeFile(testsFileName, fileContent, () => {
-      console.log(`Test file for ${componentPath} was created! 📸`);
+      logTestCreatedMessage(componentPath);
     });
   } else {
-    console.log(`⚠️ ${testsFileName} was already created before. ` +
-      `The file was not overwritten.`)
+    logTestsFileIsExistError(testsFileName);
   }
 }
 
