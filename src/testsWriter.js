@@ -2,14 +2,12 @@ const fs = require('fs');
 
 const valuesGenerator = require('./valuesGenerator');
 const getValuesSetForTypes = valuesGenerator.getValuesSetForTypes;
-const getInvalidTypes = valuesGenerator.getInvalidTypes;
 
 const generatePropAttributes = require('./propsGenerator').generatePropAttributes;
 
 const logger = require('./logger');
 const logTestsFileIsExistError = logger.logTestsFileIsExistError;
 const logTestCreatedMessage = logger.logTestCreatedMessage;
-const logNotSupportedTypesError = logger.logNotSupportedTypesError;
 
 const testsFileTemplate =
 `import React from 'react';
@@ -107,22 +105,14 @@ function generateTestsFile(
   enums,
   props
 ) {
-  const invalidTypes = getInvalidTypes(props, enums);
+  const tests = getTestContents(componentName, props, enums).join('');
 
-  if (invalidTypes.length) {
-    logNotSupportedTypesError(
-      invalidTypes.map(item => item.type)
-    );
-  } else {
-    const tests = getTestContents(componentName, props, enums).join('');
+  let fileContent = testsFileTemplate.replace(/\$COMPONENT_IMPORT/g,
+    generateComponentImportStatement(componentName, enums));
+  fileContent = fileContent.replace(/\$COMPONENT_PATH/g, componentPath);
+  fileContent = fileContent.replace(/\$TESTS/g, tests);
 
-    let fileContent = testsFileTemplate.replace(/\$COMPONENT_IMPORT/g,
-      generateComponentImportStatement(componentName, enums));
-    fileContent = fileContent.replace(/\$COMPONENT_PATH/g, componentPath);
-    fileContent = fileContent.replace(/\$TESTS/g, tests);
-
-    return fileContent;
-  }
+  return fileContent;
 }
 
 function getComponentNameFromPath(path) {

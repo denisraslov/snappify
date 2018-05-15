@@ -3,17 +3,56 @@
 const parseComponent = require('./src/componentReader').parseComponent;
 const writeTestsFile = require('./src/testsWriter').writeTestsFile;
 
+const valuesGenerator = require('./src/valuesGenerator');
+const getInvalidTypes = valuesGenerator.getInvalidTypes;
+
 const logger = require('./src/logger');
-const logError = logger.logError;
+const logProcessingStart = logger.logProcessingStart;
+const logNoInterfaceItemsFoundError = logger.logNoInterfaceItemsFoundError;
+const logNotSupportedTypesError = logger.logNotSupportedTypesError;
 
 const componentFilePaths = process.argv.slice(2, process.argv.length - 1);
 const testsRoot = process.argv.pop();
+
+function run() {
+  logProcessingStart();
+  processFiles(componentFilePaths);
+}
+
+function processFiles(componentFilePaths) {
+  // Walk the files with the components
+  componentFilePaths.forEach((componentPath) => {
+    createTestFileForComponent(componentPath);
+  });
+}
+
+function validateProps(componentPath, props, enums) {
+  if (!props.length) {
+    logNoInterfaceItemsFoundError(componentPath);
+    return false;
+  }
+
+  const invalidTypes = getInvalidTypes(props, enums);
+  if (invalidTypes.length) {
+    logNotSupportedTypesError(
+      componentPath,
+      invalidTypes.map(item => item.type)
+    );
+    return false;
+  }
+
+  return true;
+}
 
 function createTestFileForComponent(componentPath) {
   parseComponent(componentPath)
     .then(({ name, types, enums }) => {
       // console.log(`Interface types with values: ` +
       //   `\n${typesWithValues.map(obj => JSON.stringify(obj) + '\n')}`);
+
+      if (!validateProps(componentPath, types, enums)) {
+        return;
+      }
 
       writeTestsFile(
         name,
@@ -23,12 +62,7 @@ function createTestFileForComponent(componentPath) {
         testsRoot
       );
     })
-    .catch((error) => {
-      logError(error.toString());
-    });
+    .catch((error) => {});
 }
 
-// Walk the files with the components
-componentFilePaths.forEach((componentPath) => {
-  createTestFileForComponent(componentPath);
-});
+run();

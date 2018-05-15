@@ -7,11 +7,11 @@ function logError(msg) {
 }
 
 function logNoTSInterfaceFoundError(fileName, interfaceName) {
-  logError(`Can't find a TypeScript props interface ${interfaceName} in ${fileName}. This file was skipped.`);
+  logError(`${fileName}: Can't find a TypeScript props interface ${interfaceName}. This file was skipped.`);
 }
 
 function logNoComponentWithTSInterfaceFoundError(fileName) {
-  logError(`${fileName} doesn't contain a React component with a TypeScript props interface. This file was skipped.`);
+  logError(`${fileName}: doesn't contain a React component with a TypeScript props interface. This file was skipped.`);
 }
 
 function logTestsFileIsExistError(testsFileName) {
@@ -19,12 +19,21 @@ function logTestsFileIsExistError(testsFileName) {
 }
 
 function logNotSupportedTypesError(fileName, notSupportedTypes) {
-  logError(`The props of ${fileName} contain not supported types: ` +
+  logError(`${fileName}: The TypeScript props interface contains not supported types: ` +
     notSupportedTypes.join(',') + `. This file was skipped.`)
 }
 
+function logNoInterfaceItemsFoundError(fileName) {
+  logError(`${fileName}: Can't find any items in the TypeScript props interface. ` +
+    `This file was skipped. More likely, you used commas instead of semicolons as delimiters.`)
+}
+
+function logProcessingStart() {
+  logMessage(`Snappify is processing your React components...`);
+}
+
 function logTestCreatedMessage(fileName) {
-  logMessage(`Test file for ${fileName} was created! 📸`)
+  logMessage(`${fileName}: Test file for was created! 📸`)
 }
 
 module.exports = {
@@ -33,5 +42,7 @@ module.exports = {
   logNoComponentWithTSInterfaceFoundError,
   logTestsFileIsExistError,
   logNotSupportedTypesError,
+  logNoInterfaceItemsFoundError,
+  logProcessingStart,
   logTestCreatedMessage
 };
