@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 const parseComponent = require('./src/componentReader').parseComponent;
-const generateValue = require('./src/valuesGenerator');
 const writeTestsFile = require('./src/testsWriter').writeTestsFile;
 
 const componentFilePaths = process.argv.slice(2, process.argv.length - 1);
