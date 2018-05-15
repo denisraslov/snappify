@@ -138,7 +138,7 @@ I condiser increase of the supported types as a future improvement.
 
 ## Supported TypeScript syntax
 
-Right now `Snappify` supports **only** a semicolon (`;`) as a delimiter between interface items. See example:
+Right now `Snappify` supports **only** the semicolon (`;`) as a delimiter between interface items. See example:
 
 ```js
 interface IButtonProps {
