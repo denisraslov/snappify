@@ -1,4 +1,4 @@
-module.exports = {
+{
     "extends": "standard",
     "globals": {
        "test": true,
@@ -9,4 +9,4 @@ module.exports = {
         "space-before-function-paren": [ 0 ],
         "prefer-promise-reject-errors": [ 0 ]
     }
-};
+}
