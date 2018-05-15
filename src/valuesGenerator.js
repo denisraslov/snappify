@@ -36,7 +36,7 @@ function getTypeValuesRange(type, isRequired, enums) {
   if (enums) {
     const typeEnum = enums.find(item => item.name === type);
     if (typeEnum) {
-      range = typeEnum.items;
+      range = typeEnum.items.map(enumItem => `${type}.${enumItem}`);
     }
   }
 

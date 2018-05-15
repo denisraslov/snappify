@@ -3,7 +3,7 @@
 const parseComponent = require('./src/componentReader').parseComponent;
 const writeTestsFile = require('./src/testsWriter').writeTestsFile;
 
-const logger = require('./logger');
+const logger = require('./src/logger');
 const logError = logger.logError;
 
 const componentFilePaths = process.argv.slice(2, process.argv.length - 1);
