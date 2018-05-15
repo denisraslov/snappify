@@ -28,6 +28,7 @@ function logTestCreatedMessage(fileName) {
 }
 
 module.exports = {
+  logError,
   logNoTSInterfaceFoundError,
   logNoComponentWithTSInterfaceFoundError,
   logTestsFileIsExistError,

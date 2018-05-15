@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint */*.js",
     "test": "jest",
-    "precommit": "lint-staged & npm test"
+    "precommit": "lint-staged && npm test"
   },
   "keywords": [
     "jest",
