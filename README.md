@@ -130,6 +130,34 @@ test('Button case #2', () => {
 
 ## Supported TypeScript types
 
-Right now `Snappify` supports the [basic types of TypeScript](https://www.typescriptlang.org/docs/handbook/basic-types.html). It also supports a few of the React types: `React.ReactNode`, `JSX.Element` and `React.CSSProperties`. We condiser increase of the supported types as a future improvement.
+Right now `Snappify` supports the [basic types of TypeScript](https://www.typescriptlang.org/docs/handbook/basic-types.html). It also supports a few of the React types: `React.ReactNode`, `JSX.Element` and `React.CSSProperties`. 
+
+It **doesn't support** using other declared TypeScript interfaces as types of items of a React component's interface yet.
+
+I condiser increase of the supported types as a future improvement.
 
 ## Supported TypeScript syntax
+
+Right now `Snappify` supports **only** the semicolon (`;`) as a delimiter between interface items. See example:
+
+```js
+interface IButtonProps {
+    children: React.ReactNode;
+    className?: string;
+}
+```
+
+It also supports only React components declared with one of the following statements:
+
+```js
+class Button extends React.Component<IButtonProps, IButtonState> {}
+```
+
+```js
+class Button extends React.PureComponent<IButtonProps, IButtonState> {}
+```
+
+```js
+const Button:React.StatelessComponent<IButtonProps> = (props) => {}
+```
+
