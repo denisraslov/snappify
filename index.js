@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+const argsReader = require('./src/argsReader');
+const getComponentsFilePaths = argsReader.getComponentsFilePaths;
+const getTestsRoot = argsReader.getTestsRoot;
+
 const parseComponent = require('./src/componentReader').parseComponent;
 const writeTestsFile = require('./src/testsWriter').writeTestsFile;
 
@@ -11,8 +15,8 @@ const logProcessingStart = logger.logProcessingStart;
 const logNoInterfaceItemsFoundError = logger.logNoInterfaceItemsFoundError;
 const logNotSupportedTypesError = logger.logNotSupportedTypesError;
 
-const componentFilePaths = process.argv.slice(2, process.argv.length - 1);
-const testsRoot = process.argv.pop();
+const componentFilePaths = getComponentsFilePaths();
+const testsRoot = getTestsRoot();
 
 function run() {
   logProcessingStart();
