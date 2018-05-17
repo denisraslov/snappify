@@ -28,8 +28,16 @@ function logNoInterfaceItemsFoundError(fileName) {
     `This file was skipped. More likely, you used commas instead of semicolons as delimiters.`)
 }
 
+function logNoFilesError() {
+  logError('Please, set a glob pattern for React components written with TypeScript!');
+}
+
+function logNoTestsRootError() {
+  logError('Please, set a name of a folder to create test files into!');
+}
+
 function logProcessingStart() {
-  logMessage(`Snappify is processing your React components...`);
+  logMessage(`🚀 Snappify is processing your React components...`);
 }
 
 function logTestCreatedMessage(fileName) {
@@ -43,6 +51,8 @@ module.exports = {
   logTestsFileIsExistError,
   logNotSupportedTypesError,
   logNoInterfaceItemsFoundError,
+  logNoFilesError,
+  logNoTestsRootError,
   logProcessingStart,
   logTestCreatedMessage
 };

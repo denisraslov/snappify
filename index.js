@@ -14,6 +14,8 @@ const logger = require('./src/logger');
 const logProcessingStart = logger.logProcessingStart;
 const logNoInterfaceItemsFoundError = logger.logNoInterfaceItemsFoundError;
 const logNotSupportedTypesError = logger.logNotSupportedTypesError;
+const logNoFilesError = logger.logNoFilesError;
+const logNoTestsRootError = logger.logNoTestsRootError;
 
 const componentFilePaths = getComponentsFilePaths();
 const testsRoot = getTestsRoot();
@@ -69,4 +71,10 @@ function createTestFileForComponent(componentPath) {
     .catch((error) => {});
 }
 
-run();
+if (!componentFilePaths.length) {
+  logNoFilesError();
+} else if (!testsRoot) {
+  logNoTestsRootError();
+} else {
+  run();
+}
