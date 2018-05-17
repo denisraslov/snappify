@@ -1,8 +1,10 @@
 <h1 align="center">
   Snappify
   <br>
-  <img src="https://emojipedia-us.s3.amazonaws.com/thumbs/120/apple/118/camera-with-flash_1f4f8.png" alt="snappify logo" title="snappify logo" width="100">
+  <img src="https://emojipedia-us.s3.amazonaws.com/thumbs/120/apple/118/camera-with-flash_1f4f8.png" alt="Snappify logo" title="Snappify logo" width="100">
   <br>
+  <img src="https://s3.amazonaws.com/media-p.slid.es/uploads/401307/images/4926305/All.png" alt="React + Jest + TypeScript" title="React + Jest + TypeScript" width="400">
+  
 </h1>
 <p align="center" style="font-size: 1.2rem;"><b>A generator of Jest snapshot-based tests for React components written with TypeScript</b></p>
 
