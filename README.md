@@ -16,6 +16,10 @@ However, if you write components with [TypeScript](https://www.typescriptlang.or
 
 `Snappify` generates files with tests for your React components. You just run them. ✨
 
+## A related blog post
+
+* [Introducing Snappify 📸: A generator of snapshot tests for React + TypeScript](https://medium.com/@denisraslov/introducing-snappify-a-generator-of-snapshot-tests-for-react-typescript-54b3fd1ffa54)
+
 ## Quick Overview
 
 Install `Snappify` globally:
