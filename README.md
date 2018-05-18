@@ -16,6 +16,10 @@ However, if you write components with [TypeScript](https://www.typescriptlang.or
 
 `Snappify` generates files with tests for your React components. You just run them. ✨
 
+## A related blog post
+
+* [Introducing Snappify 📸: A generator of snapshot tests for React + TypeScript](https://medium.com/@denisraslov/introducing-snappify-a-generator-of-snapshot-tests-for-react-typescript-54b3fd1ffa54)
+
 ## Quick Overview
 
 Install `Snappify` globally:
@@ -27,7 +31,7 @@ npm install -g snappify
 Run `Snappify` inside of a project folder with a configured glob pattern of the React components files and a name of a root folder for generated tests:
 
 ```sh
-snappify components/**/*.tsx tests
+snappify components/**/*.tsx --testsRoot=tests
 ```
 
 It will create a directory called `tests` inside the current folder.
