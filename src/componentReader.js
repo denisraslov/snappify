@@ -52,7 +52,7 @@ function findComponentName(text, fileName) {
 }
 
 function findPropsInterface(text, fileName) {
-  const interfaceNameRegExp = /React.(Component|PureComponent|StatelessComponent)<(.*?)(>|,)/g;
+  const interfaceNameRegExp = /React.(Component|PureComponent|StatelessComponent|FunctionComponent|SFC|FC)<(.*?)(>|,)/g;
   const interfaceNameMatch = interfaceNameRegExp.exec(text);
 
   if (interfaceNameMatch) {
