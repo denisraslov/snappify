@@ -1,18 +1,16 @@
-const argv = require('minimist')(process.argv.slice(2));
+const argv = require('minimist')(process.argv.slice(2))
 
 function getComponentsFilePaths() {
-  return argv._;
+  return argv._
 }
 
 function getTestsRoot() {
-  const testsRoot = argv.testsRoot;
+  const testsRoot = argv.testsRoot
 
-  return typeof testsRoot === 'string'
-    ? testsRoot
-    : null;
+  return typeof testsRoot === 'string' ? testsRoot : null
 }
 
 module.exports = {
   getComponentsFilePaths,
-  getTestsRoot
-};
+  getTestsRoot,
+}

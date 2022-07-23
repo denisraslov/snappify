@@ -1,9 +1,8 @@
-const generateTest = require('./../src/testsWriter').generateTest;
-const generateTestsFile = require('./../src/testsWriter').generateTestsFile;
-const getTestContents = require('./../src/testsWriter').getTestContents;
+const generateTest = require('./../src/testsWriter').generateTest
+const generateTestsFile = require('./../src/testsWriter').generateTestsFile
+const getTestContents = require('./../src/testsWriter').getTestContents
 
-const expectedTestContent =
-`test('ComponentName TestID', () => {
+const expectedTestContent = `test('ComponentName TestID', () => {
   const tree = renderer.create(
     <ComponentName
       id=1
@@ -13,10 +12,9 @@ const expectedTestContent =
   expect(tree).toMatchSnapshot();
 });
 
-`;
+`
 
-const expectedTestsFileContent =
-`import React from 'react';
+const expectedTestsFileContent = `import React from 'react';
 import renderer from 'react-test-renderer';
 
 import ComponentName, { Enum1, Enum2 } from 'components/index.tsx';
@@ -65,28 +63,26 @@ test('ComponentName Case #4', () => {
   expect(tree).toMatchSnapshot();
 });
 
-`;
+`
 
 const propTypes = [
   {
     name: 'prop1',
     type: 'string',
-    required: true
+    required: true,
   },
   {
     name: 'prop2',
     type: 'boolean',
-    required: true
-  }
-];
+    required: true,
+  },
+]
 
 test('Test generation', () => {
-  const testContent = generateTest(
-    'ComponentName', 'TestID', 'id=1'
-  );
+  const testContent = generateTest('ComponentName', 'TestID', 'id=1')
 
-  expect(testContent).toEqual(expectedTestContent);
-});
+  expect(testContent).toEqual(expectedTestContent)
+})
 
 test('Tests file generation', () => {
   const testContent = generateTestsFile(
@@ -94,19 +90,20 @@ test('Tests file generation', () => {
     'ComponentName',
     [
       {
-        name: 'Enum1'
+        name: 'Enum1',
       },
       {
-        name: 'Enum2'
-      }
+        name: 'Enum2',
+      },
     ],
     propTypes
-  );
+  )
 
-  expect(testContent).toEqual(expectedTestsFileContent);
-});
+  expect(testContent).toEqual(expectedTestsFileContent)
+})
 
 test('Test cases count', () => {
-  expect(getTestContents('ComponentName', propTypes).length)
-    .toBeLessThanOrEqual(10);
-});
+  expect(
+    getTestContents('ComponentName', propTypes).length
+  ).toBeLessThanOrEqual(10)
+})

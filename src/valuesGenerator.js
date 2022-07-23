@@ -1,77 +1,72 @@
 function getTypeValuesRange(type, isRequired, enums) {
-  let range;
+  let range
 
   if (type === 'void' || type === 'undefined') {
-    range = ['undefined'];
+    range = ['undefined']
   }
 
   if (type === 'null') {
-    range = ['null'];
+    range = ['null']
   }
 
   if (type === 'string') {
-    range = ['\'\'', '\'value\''];
+    range = ["''", "'value'"]
   }
 
   if (type === 'number' || type === 'any') {
-    range = [-10, 0, 10];
+    range = [-10, 0, 10]
   }
 
   if (type === 'boolean') {
-    range = [false, true];
+    range = [false, true]
   }
 
   if (type === 'object') {
-    range = ['{}'];
+    range = ['{}']
   }
 
   if (type === 'React.ReactNode' || type === 'JSX.Element') {
-    range = ['<div />'];
+    range = ['<div />']
   }
 
   if (type === 'React.CSSProperties') {
-    range = ['{}', '{ padding: 0 }'];
+    range = ['{}', '{ padding: 0 }']
   }
 
   if (enums) {
-    const typeEnum = enums.find(item => item.name === type);
+    const typeEnum = enums.find((item) => item.name === type)
     if (typeEnum) {
-      range = typeEnum.items.map(enumItem => `${type}.${enumItem}`);
+      range = typeEnum.items.map((enumItem) => `${type}.${enumItem}`)
     }
   }
 
   if (type.includes('[]') || type.includes('Array')) {
     const itemType = type.includes('Array')
       ? type.substr(6, type.length - 7)
-      : type.substr(0, type.length - 2);
+      : type.substr(0, type.length - 2)
 
-    const itemTypeRange = getTypeValuesRange(itemType, true, enums);
+    const itemTypeRange = getTypeValuesRange(itemType, true, enums)
 
     if (itemTypeRange) {
-      range = [
-        [],
-        [itemTypeRange[0]]
-      ];
+      range = [[], [itemTypeRange[0]]]
     }
   }
 
   if (type.includes('=>')) {
-    const returnType = type.split('=>').pop();
-    const returnTypeRange = getTypeValuesRange(returnType, true, enums);
+    const returnType = type.split('=>').pop()
+    const returnTypeRange = getTypeValuesRange(returnType, true, enums)
 
     if (returnTypeRange) {
-      range = returnTypeRange.map(
-        value => `() => ${value}`
-      );
+      range = returnTypeRange.map((value) => `() => ${value}`)
     }
   }
 
   if (range && !isRequired) {
     // undefined means an option when we won't add a prop to a component
-    range.push(undefined);
+    range.push(undefined)
   }
 
-  return range;
+  return range
 }
 
 // Get all the combinations of values for their defined ranges.
@@ -80,58 +75,58 @@ function getTypeValuesRange(type, isRequired, enums) {
 // [-10, 0 ,10 ]
 // ['', 'value']
 function getValuesSetForRanges(ranges) {
-  let valuesSets = [];
+  let valuesSets = []
 
   for (let rangeIndex = 0; rangeIndex < ranges.length; rangeIndex++) {
-    const values = ranges[rangeIndex];
+    const values = ranges[rangeIndex]
 
     if (valuesSets.length === 0) {
-      valuesSets.push(
-        ...(values.map(value => [value]))
-      );
+      valuesSets.push(...values.map((value) => [value]))
     } else {
-      const newValuesSets = [];
+      const newValuesSets = []
 
       for (let setIndex = 0; setIndex < valuesSets.length; setIndex++) {
-        const valuesSet = valuesSets[setIndex];
+        const valuesSet = valuesSets[setIndex]
 
         for (let valueIndex = 0; valueIndex < values.length; valueIndex++) {
-          const value = values[valueIndex];
-          const newValuesSet = valuesSet.concat([value]);
+          const value = values[valueIndex]
+          const newValuesSet = valuesSet.concat([value])
 
-          newValuesSets.push(newValuesSet);
+          newValuesSets.push(newValuesSet)
         }
       }
 
-      valuesSets = newValuesSets;
+      valuesSets = newValuesSets
     }
   }
 
-  return valuesSets;
+  return valuesSets
 }
 
 function getRangesForTypes(props, enums) {
-  return props.map(prop => getTypeValuesRange(prop.type, prop.required, enums));
+  return props.map((prop) =>
+    getTypeValuesRange(prop.type, prop.required, enums)
+  )
 }
 
 function getValuesSetForTypes(props, enums) {
-  const ranges = getRangesForTypes(props, enums);
+  const ranges = getRangesForTypes(props, enums)
 
-  return getValuesSetForRanges(ranges);
+  return getValuesSetForRanges(ranges)
 }
 
 function getInvalidTypes(props, enums) {
-  const ranges = getRangesForTypes(props, enums);
+  const ranges = getRangesForTypes(props, enums)
 
   return props.filter((prop, i) => {
-    const range = ranges[i];
-    return !range;
-  });
+    const range = ranges[i]
+    return !range
+  })
 }
 
 module.exports = {
   getValuesSetForRanges,
   getValuesSetForTypes,
   getTypeValuesRange,
-  getInvalidTypes
-};
+  getInvalidTypes,
+}

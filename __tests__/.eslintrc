@@ -1,12 +1,15 @@
 {
-    "extends": "standard",
-    "globals": {
-       "test": true,
-       "expect": true
-    },
-    "rules": {
-        "semi": [ 0 ],
-        "space-before-function-paren": [ 0 ],
-        "prefer-promise-reject-errors": [ 0 ]
-    }
+  "extends": "standard",
+  "globals": {
+    "test": true,
+    "expect": true
+  },
+  "rules": {
+    "semi": [0],
+    "comma-dangle": "off",
+    "quotes": [0],
+    "n/handle-callback-err": "off",
+    "space-before-function-paren": [0],
+    "prefer-promise-reject-errors": [0]
+  }
 }
