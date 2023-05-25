@@ -167,3 +167,6 @@ class Button extends React.PureComponent<IButtonProps, IButtonState> {}
 const Button:React.StatelessComponent<IButtonProps> = (props) => {}
 ```
 
+```js
+const Button:React.FunctionComponent<IButtonProps> = (props) => {}
+```
