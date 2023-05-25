@@ -33,7 +33,8 @@ function findExportedEnums(text, fileName) {
 }
 
 function findComponentName(text, fileName) {
-  const statelessComponentNameRegExp = /(.*):(.*?)React.StatelessComponent/g
+  const statelessComponentNameRegExp =
+    /(.*):(.*?)React.(StatelessComponent|FunctionComponent|SFC|FC)/g
   const statelessComponentMatches = statelessComponentNameRegExp.exec(text)
   let componentName
 
@@ -54,7 +55,7 @@ function findComponentName(text, fileName) {
 
 function findPropsInterface(text, fileName) {
   const interfaceNameRegExp =
-    /React.(Component|PureComponent|StatelessComponent)<(.*?)(>|,)/g
+    /React.(Component|PureComponent|StatelessComponent|FunctionComponent|SFC|FC)<(.*?)(>|,)/g
   const interfaceNameMatch = interfaceNameRegExp.exec(text)
 
   if (interfaceNameMatch) {
