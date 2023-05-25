@@ -1,6 +1,7 @@
 {
   "extends": "standard",
   "rules": {
+    "comma-dangle": ["error", "only-multiline"],
     "semi": [0],
     "space-before-function-paren": [0],
     "prefer-promise-reject-errors": [0],
